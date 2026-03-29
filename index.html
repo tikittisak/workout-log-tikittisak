@@ -551,6 +551,21 @@ header h1 {
 .empty-state .big { font-size: 40px; margin-bottom: 12px; }
 .empty-state p { font-size: 11px; letter-spacing: 1px; }
 
+/* ── SYNC DOT ── */
+.sync-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #555;
+  flex-shrink: 0;
+  transition: background 0.3s;
+  cursor: pointer;
+}
+.sync-dot.ok      { background: var(--green); }
+.sync-dot.syncing { background: #f59e0b; animation: syncpulse 0.9s infinite; }
+.sync-dot.error   { background: var(--red); }
+.sync-dot.off     { background: #555; }
+@keyframes syncpulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
 /* ── TOAST ── */
 .toast {
   position: fixed;
@@ -630,6 +645,8 @@ header h1 {
     <div class="stat-chip">Streak: <span id="hdr-streak">0</span>d</div>
   </div>
   <div class="header-actions">
+    <div id="sync-dot" class="sync-dot off" onclick="openSettings()" title="Cloud sync — click to configure"></div>
+    <button class="btn-hdr" onclick="openSettings()">☁ Sync</button>
     <button class="btn-hdr" onclick="exportData()">↓ Export All</button>
     <label class="btn-hdr" style="cursor:pointer" title="Import JSON backup">
       ↑ Import <input type="file" accept=".json" style="display:none" onchange="importData(event)">
@@ -762,6 +779,29 @@ header h1 {
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- SYNC SETTINGS MODAL -->
+<div class="modal-bg" id="settings-bg">
+  <div class="modal" style="max-width:460px">
+    <h3>☁ Cloud Sync</h3>
+    <p>Sync your workouts across all devices using <strong>JSONBin.io</strong> (free). <a href="https://jsonbin.io" target="_blank" style="color:var(--blue)">Get a free API key →</a></p>
+    <div class="field">
+      <label>API Key (X-Master-Key)</label>
+      <input type="password" id="s-apikey" placeholder="$2b$10$..." autocomplete="off">
+    </div>
+    <div class="field">
+      <label>Bin ID <span style="font-size:9px;color:var(--muted)">(leave blank to auto-create on first save)</span></label>
+      <input type="text" id="s-binid" placeholder="auto-created..." autocomplete="off">
+    </div>
+    <div id="s-status" style="font-size:10px;color:var(--muted);margin-bottom:12px;min-height:14px"></div>
+    <div class="modal-actions">
+      <button class="btn-sm" onclick="closeSettings()">Cancel</button>
+      <button class="btn-sm" onclick="testConnection()">Test</button>
+      <button class="btn-sm" onclick="disableSync()" style="margin-right:auto">Disable</button>
+      <button class="btn-sm" onclick="saveSettings()" style="background:var(--ink);color:var(--paper);border-color:var(--ink)">Save &amp; Sync</button>
+    </div>
+  </div>
+</div>
+
 <!-- CONFIRM MODAL -->
 <div class="modal-bg" id="modal-bg">
   <div class="modal">
@@ -836,11 +876,20 @@ const DEFAULT_TEMPLATES = [
 ];
 
 // ── STORAGE ──
+let _dataCache = null;
+
 function getData() {
-  try { return JSON.parse(localStorage.getItem(STORE)) || []; }
-  catch { return []; }
+  if (_dataCache !== null) return _dataCache;
+  try { _dataCache = JSON.parse(localStorage.getItem(STORE)) || []; }
+  catch { _dataCache = []; }
+  return _dataCache;
 }
-function saveData(d) { localStorage.setItem(STORE, JSON.stringify(d)); }
+
+function saveData(d) {
+  _dataCache = d;
+  localStorage.setItem(STORE, JSON.stringify(d));
+  pushToCloud(d);
+}
 
 // ── TABS ──
 function showTab(t) {
@@ -1275,9 +1324,144 @@ function exportSelected() {
   toast(`Exported ${sessions.length} session${sessions.length !== 1 ? 's' : ''} ✓`);
 }
 
+// ── CLOUD SYNC (JSONBin.io) ──
+const JBIN_KEY  = 'wb_jbkey';
+const JBIN_BIN  = 'wb_jbbin';
+let _apiKey = '';
+let _binId  = '';
+let _syncEnabled = false;
+
+function initSync() {
+  _apiKey = localStorage.getItem(JBIN_KEY) || '';
+  _binId  = localStorage.getItem(JBIN_BIN) || '';
+  _syncEnabled = !!(_apiKey && _binId);
+  setSyncDot(_syncEnabled ? 'syncing' : 'off');
+  if (_syncEnabled) pullFromCloud();
+}
+
+function setSyncDot(state) {
+  const dot = document.getElementById('sync-dot');
+  if (!dot) return;
+  dot.className = 'sync-dot ' + state;
+  const labels = { off:'Sync off — click to set up', ok:'Synced ✓', syncing:'Syncing…', error:'Sync error — click to check settings' };
+  dot.title = labels[state] || '';
+}
+
+async function pullFromCloud() {
+  setSyncDot('syncing');
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${_binId}/latest`, {
+      headers: { 'X-Master-Key': _apiKey, 'X-Bin-Meta': 'false' }
+    });
+    if (!res.ok) throw new Error(res.status);
+    const json = await res.json();
+    const sessions = Array.isArray(json.record?.sessions) ? json.record.sessions
+                   : Array.isArray(json.record) ? json.record : null;
+    if (sessions !== null) {
+      _dataCache = sessions;
+      localStorage.setItem(STORE, JSON.stringify(sessions));
+      updateHeaderStats();
+      if (document.getElementById('tab-history').style.display !== 'none') renderHistory();
+    }
+    setSyncDot('ok');
+  } catch(e) {
+    console.error('Pull failed:', e);
+    setSyncDot('error');
+  }
+}
+
+async function pushToCloud(data) {
+  if (!_syncEnabled) return;
+  setSyncDot('syncing');
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${_binId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': _apiKey },
+      body: JSON.stringify({ sessions: data })
+    });
+    if (!res.ok) throw new Error(res.status);
+    setSyncDot('ok');
+  } catch(e) {
+    console.error('Push failed:', e);
+    setSyncDot('error');
+    toast('Sync failed — saved locally only', true);
+  }
+}
+
+function openSettings() {
+  document.getElementById('s-apikey').value = _apiKey;
+  document.getElementById('s-binid').value  = _binId;
+  document.getElementById('s-status').textContent = _syncEnabled ? '✓ Sync is active' : '';
+  document.getElementById('settings-bg').classList.add('open');
+}
+function closeSettings() { document.getElementById('settings-bg').classList.remove('open'); }
+
+async function saveSettings() {
+  const key = document.getElementById('s-apikey').value.trim();
+  const bin = document.getElementById('s-binid').value.trim();
+  const status = document.getElementById('s-status');
+  if (!key) { status.textContent = '⚠ API key is required'; return; }
+
+  let finalBin = bin;
+  if (!finalBin) {
+    status.textContent = 'Creating cloud bin…';
+    try {
+      const res = await fetch('https://api.jsonbin.io/v3/b', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': key, 'X-Bin-Name': 'workout-log' },
+        body: JSON.stringify({ sessions: _dataCache || [] })
+      });
+      if (!res.ok) throw new Error('Status ' + res.status);
+      const json = await res.json();
+      finalBin = json.metadata.id;
+      document.getElementById('s-binid').value = finalBin;
+      status.textContent = '✓ Bin created: ' + finalBin;
+    } catch(e) {
+      status.textContent = '✗ Failed to create bin — check API key';
+      return;
+    }
+  }
+
+  _apiKey = key;
+  _binId  = finalBin;
+  _syncEnabled = true;
+  localStorage.setItem(JBIN_KEY, key);
+  localStorage.setItem(JBIN_BIN, finalBin);
+  closeSettings();
+  toast('Cloud sync enabled ✓');
+  pullFromCloud();
+}
+
+async function testConnection() {
+  const key = document.getElementById('s-apikey').value.trim();
+  const bin = document.getElementById('s-binid').value.trim();
+  const status = document.getElementById('s-status');
+  if (!key || !bin) { status.textContent = '⚠ Enter both API key and Bin ID first'; return; }
+  status.textContent = 'Testing…';
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${bin}/latest`, {
+      headers: { 'X-Master-Key': key, 'X-Bin-Meta': 'false' }
+    });
+    if (!res.ok) throw new Error('Status ' + res.status);
+    status.textContent = '✓ Connection OK!';
+  } catch(e) {
+    status.textContent = '✗ Connection failed — check credentials';
+  }
+}
+
+function disableSync() {
+  _apiKey = ''; _binId = ''; _syncEnabled = false;
+  localStorage.removeItem(JBIN_KEY);
+  localStorage.removeItem(JBIN_BIN);
+  closeSettings();
+  setSyncDot('off');
+  toast('Cloud sync disabled');
+}
+
 // ── INIT ──
 initForm();
 updateHeaderStats();
+initSync();
 </script>
 </body>
 </html>
