@@ -1351,7 +1351,7 @@ async function pullFromCloud() {
   setSyncDot('syncing');
   try {
     const res = await fetch(`https://api.jsonbin.io/v3/b/${_binId}/latest`, {
-      headers: { 'X-Master-Key': _apiKey, 'X-Bin-Meta': 'false' }
+      headers: { 'X-Master-Key': _apiKey }
     });
     if (!res.ok) throw new Error(res.status);
     const json = await res.json();
@@ -1440,7 +1440,7 @@ async function testConnection() {
   status.textContent = 'Testing…';
   try {
     const res = await fetch(`https://api.jsonbin.io/v3/b/${bin}/latest`, {
-      headers: { 'X-Master-Key': key, 'X-Bin-Meta': 'false' }
+      headers: { 'X-Master-Key': key }
     });
     if (!res.ok) throw new Error('Status ' + res.status);
     status.textContent = '✓ Connection OK!';
