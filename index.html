@@ -594,6 +594,16 @@ header h1 {
 .modal p { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
 
+/* ── SESSION CHECKBOX ── */
+.sc-sel {
+  width: 15px; height: 15px;
+  cursor: pointer;
+  accent-color: var(--ink);
+  flex-shrink: 0;
+  margin-right: 2px;
+}
+.session-card.selected { outline: 2px solid var(--ink); outline-offset: -1px; }
+
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--paper2); }
@@ -620,7 +630,7 @@ header h1 {
     <div class="stat-chip">Streak: <span id="hdr-streak">0</span>d</div>
   </div>
   <div class="header-actions">
-    <button class="btn-hdr" onclick="exportData()">↓ Export</button>
+    <button class="btn-hdr" onclick="exportData()">↓ Export All</button>
     <label class="btn-hdr" style="cursor:pointer" title="Import JSON backup">
       ↑ Import <input type="file" accept=".json" style="display:none" onchange="importData(event)">
     </label>
@@ -727,6 +737,7 @@ header h1 {
       <button class="ftag" data-filter="meta" onclick="filterSessions(this)">Metabolic</button>
     </div>
     <input type="search" id="search-input" placeholder="Search exercise..." oninput="renderHistory()">
+    <button class="btn-hdr primary" id="btn-export-sel" style="display:none" onclick="exportSelected()">↓ Export Selected (<span id="sel-count">0</span>)</button>
     <button class="btn-hdr" style="margin-left:auto" onclick="if(confirm('Clear ALL data?')) { localStorage.removeItem(STORE); updateHeaderStats(); renderHistory(); toast('Cleared.'); }">Clear All</button>
   </div>
   <div class="sessions-list" id="sessions-list"></div>
@@ -956,6 +967,7 @@ function renderHistory() {
     return `
       <div class="session-card" data-type="${s.type}" data-id="${s.id}">
         <div class="sc-header" onclick="toggleCard(this)">
+          <input type="checkbox" class="sc-sel" data-id="${s.id}" onclick="event.stopPropagation(); updateSelectionCount()" title="Select for export">
           <div>
             <div class="sc-date">${s.date} <span style="color:var(--muted);font-size:10px">${s.week||''}</span></div>
             <div class="sc-type">${typeLabel[s.type]||s.type}${s.bodyweight ? ' · ' + s.bodyweight + ' kg' : ''}</div>
@@ -1235,6 +1247,33 @@ function showModal(title, msg, cb) {
 }
 function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
 document.getElementById('modal-bg').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+
+// ── SELECTION / SELECTIVE EXPORT ──
+function updateSelectionCount() {
+  const checked = document.querySelectorAll('.sc-sel:checked');
+  const btn = document.getElementById('btn-export-sel');
+  const countEl = document.getElementById('sel-count');
+  const n = checked.length;
+  countEl.textContent = n;
+  btn.style.display = n > 0 ? 'inline-block' : 'none';
+  document.querySelectorAll('.session-card').forEach(card => {
+    const cb = card.querySelector('.sc-sel');
+    card.classList.toggle('selected', cb && cb.checked);
+  });
+}
+
+function exportSelected() {
+  const checked = Array.from(document.querySelectorAll('.sc-sel:checked'));
+  if (!checked.length) return;
+  const ids = new Set(checked.map(cb => Number(cb.dataset.id)));
+  const sessions = getData().filter(s => ids.has(s.id));
+  const blob = new Blob([JSON.stringify({ version: 1, exported: new Date().toISOString(), sessions }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `workout-log-selected-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  toast(`Exported ${sessions.length} session${sessions.length !== 1 ? 's' : ''} ✓`);
+}
 
 // ── INIT ──
 initForm();
