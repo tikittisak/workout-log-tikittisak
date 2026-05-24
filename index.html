@@ -2,785 +2,764 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Workout Log 2026 — v5</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Workout Log 2026 — V2.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink: #1c1b18;
-  --paper: #f0ebe0;
-  --paper2: #e4dccb;
-  --paper3: #d8cdb8;
-  --red: #b83228;
-  --green: #2a6049;
-  --blue: #2255a4;
-  --muted: #7d7360;
-  --border: #c2b89e;
-  --white: #faf8f3;
+  --bg: #f2f2f7;
+  --surface: #ffffff;
+  --surface2: #f2f2f7;
+  --surface3: #e5e5ea;
+  --border: #e0e0e5;
+  --border2: #c8c8cd;
+  --text: #000000;
+  --text2: #6e6e73;
+  --text3: #aeaeb2;
+  --accent: #000;
+  --accent-bg: #000;
+  --accent-text: #fff;
+  --green: #34c759;
+  --red: #ff3b30;
+  --blue: #007aff;
+  --orange: #ff9500;
+  --radius: 12px;
+  --radius-sm: 8px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; background: var(--bg); }
 
 body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: 'Space Mono', monospace;
-  font-size: 12px;
-  line-height: 1.55;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 /* ── HEADER ── */
 header {
-  background: var(--ink);
-  color: var(--paper);
-  padding: 0 28px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  height: 56px;
+  background: rgba(242,242,247,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 16px 20px 12px;
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 3px solid var(--red);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 header h1 {
-  font-family: 'DM Serif Display', serif;
-  font-style: italic;
-  font-size: 24px;
-  color: var(--paper);
+  font-size: 17px;
+  font-weight: 700;
   letter-spacing: -0.3px;
+  color: var(--text);
+  flex: 1;
+}
+.header-stats {
+  display: flex;
+  gap: 14px;
+}
+.stat-item {
+  text-align: center;
+}
+.stat-val {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.stat-lbl {
+  font-size: 9px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 1px;
+}
+.header-actions { display: flex; gap: 6px; }
+.btn-hdr {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
   white-space: nowrap;
 }
-.header-divider { width: 1px; height: 20px; background: #444; }
-.header-stats { display: flex; gap: 16px; align-items: center; }
-.stat-chip {
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #aaa;
-}
-.stat-chip span { color: var(--paper); font-weight: 700; }
-.header-actions { margin-left: auto; display: flex; gap: 6px; }
-.btn-hdr {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 2px;
-  border: 1px solid #555;
-  background: none;
-  color: #bbb;
-  transition: all 0.1s;
-}
-.btn-hdr:hover { border-color: var(--paper); color: var(--paper); }
-.btn-hdr.primary { background: var(--red); border-color: var(--red); color: white; }
-.btn-hdr.primary:hover { background: #9c2820; }
+.btn-hdr:hover { background: rgba(0,0,0,0.85); color: var(--text); }
 
 /* ── TABS ── */
 .tabs {
-  background: var(--paper2);
+  background: var(--bg);
   border-bottom: 1px solid var(--border);
-  padding: 0 24px;
+  padding: 0 20px;
   display: flex;
   gap: 0;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.tabs::-webkit-scrollbar { display: none; }
 .tab {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 10px 16px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  padding: 12px 16px;
   cursor: pointer;
   border: none;
   background: none;
-  color: var(--muted);
+  color: var(--text3);
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   white-space: nowrap;
-  transition: all 0.1s;
+  transition: all 0.15s;
 }
-.tab:hover { color: var(--ink); }
-.tab.active { color: var(--ink); border-bottom-color: var(--red); font-weight: 700; }
+.tab:hover { color: var(--text2); }
+.tab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
 
 /* ── MAIN ── */
-.main { padding: 24px; max-width: 900px; margin: 0 auto; }
+.main { padding: 20px; max-width: 700px; margin: 0 auto; padding-bottom: 40px; }
 
-/* ── LOG SESSION VIEW ── */
-.log-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-
-.card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  overflow: hidden;
+/* ── SECTION LABEL ── */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+  margin-top: 24px;
 }
-.card-header {
-  background: var(--paper2);
+.section-label:first-child { margin-top: 0; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.card-row {
+  padding: 14px 16px;
   border-bottom: 1px solid var(--border);
-  padding: 10px 16px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
-.card-title {
-  font-size: 9px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 700;
+.card-row:last-child { border-bottom: none; }
+.row-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  min-width: 80px;
 }
-.day-badge {
-  font-size: 9px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 2px 7px;
-  border-radius: 2px;
-  font-weight: 700;
-  margin-left: auto;
-}
-.day-lower { background: #dbeafe; color: #1e40af; }
-.day-push  { background: #fce7f3; color: #9d174d; }
-.day-pull  { background: #d1fae5; color: #065f46; }
-.day-meta  { background: #fef3c7; color: #92400e; }
+.row-label.muted { color: var(--text2); font-weight: 400; font-size: 12px; }
 
-.card-body { padding: 16px; }
-
-/* FORM FIELDS */
-.field { margin-bottom: 12px; }
-.field label {
-  display: block;
-  font-size: 8px;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 4px;
-}
-.field input, .field select, .field textarea {
-  width: 100%;
-  background: var(--paper);
-  border: 1px solid var(--border);
-  color: var(--ink);
-  font-family: 'Space Mono', monospace;
-  font-size: 12px;
-  padding: 6px 10px;
+/* ── INPUTS ── */
+input[type=text], input[type=date], input[type=number], textarea, select {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  background: transparent;
+  border: none;
+  color: var(--text);
   outline: none;
-  border-radius: 2px;
-  appearance: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+  text-align: right;
+  caret-color: var(--text);
 }
-.field input:focus, .field select:focus, .field textarea:focus {
-  border-color: var(--ink);
-  box-shadow: 2px 2px 0 var(--ink);
-}
-.field textarea { resize: vertical; min-height: 52px; font-size: 11px; }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-
-/* EXERCISE TABLE */
-.ex-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
-.ex-table th {
-  font-size: 8px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
+input[type=date] { color-scheme: light; }
+input::placeholder, textarea::placeholder { color: var(--text3); }
+textarea {
   text-align: left;
-  padding: 0 4px 5px;
+  resize: none;
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 72px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: none;
+  display: block;
+}
+select { cursor: pointer; }
+select option { background: #fff; }
+
+/* ── EXERCISE ROWS ── */
+.ex-row {
+  display: grid;
+  grid-template-columns: 1fr 60px 52px 52px 32px;
+  gap: 6px;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  animation: fadeIn 0.15s ease;
+}
+.ex-row:last-child { border-bottom: none; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+.ex-row input {
+  font-size: 13px;
+  text-align: left;
+  padding: 4px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--text);
+  width: 100%;
+}
+.ex-row input:focus { border-bottom-color: var(--text2); }
+.ex-row input:nth-child(2), .ex-row input:nth-child(3), .ex-row input:nth-child(4) { text-align: center; }
+.ex-col-headers {
+  display: grid;
+  grid-template-columns: 1fr 60px 52px 52px 32px;
+  gap: 6px;
+  padding: 8px 16px 4px;
   border-bottom: 1px solid var(--border);
 }
-.ex-table th:nth-child(2), .ex-table th:nth-child(3), .ex-table th:nth-child(4) { text-align: center; width: 64px; }
-.ex-table th:nth-child(5) { width: 28px; }
-.ex-table td { padding: 3px 4px; vertical-align: middle; }
-.ex-table input {
-  background: var(--paper);
-  border: 1px solid var(--border);
-  color: var(--ink);
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  padding: 4px 6px;
-  outline: none;
-  border-radius: 2px;
-  width: 100%;
+.ex-col-headers span {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text3);
   text-align: center;
 }
-.ex-table input:first-child { text-align: left; }
-.ex-table input:focus { border-color: var(--ink); }
-.ex-row-anim { animation: fadeSlide 0.15s ease; }
-@keyframes fadeSlide { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
-
-.btn-add-ex {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--green);
-  background: none;
-  border: 1px dashed var(--green);
-  padding: 5px 10px;
-  width: 100%;
-  cursor: pointer;
-  border-radius: 2px;
-  margin-bottom: 12px;
-  transition: background 0.1s;
-}
-.btn-add-ex:hover { background: #eef7f2; }
+.ex-col-headers span:first-child { text-align: left; }
 
 .btn-del-ex {
-  font-family: 'Space Mono', monospace;
-  font-size: 13px;
+  font-family: inherit;
+  font-size: 16px;
   line-height: 1;
-  width: 24px;
-  height: 26px;
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--muted);
+  width: 28px;
+  height: 28px;
+  background: var(--surface3);
+  border: none;
+  color: var(--text3);
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   transition: all 0.1s;
 }
-.btn-del-ex:hover { background: #fef2f2; color: var(--red); border-color: var(--red); }
+.btn-del-ex:hover { background: var(--red); color: white; }
 
-/* SUBMIT BTN */
-.btn-log {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  background: var(--ink);
-  color: var(--paper);
-  border: 2px solid var(--ink);
-  padding: 11px;
-  width: 100%;
-  cursor: pointer;
-  border-radius: 2px;
-  transition: all 0.1s;
-  margin-bottom: 6px;
-}
-.btn-log:hover { background: var(--red); border-color: var(--red); }
-.btn-log:active { transform: translate(1px, 1px); }
-
-.btn-clear {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+.btn-add-ex {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue);
   background: none;
-  color: var(--muted);
-  border: 1px solid var(--border);
-  padding: 7px;
+  border: none;
+  padding: 12px 16px;
   width: 100%;
+  text-align: left;
   cursor: pointer;
-  border-radius: 2px;
-  transition: all 0.1s;
+  transition: opacity 0.1s;
 }
-.btn-clear:hover { background: var(--paper2); }
+.btn-add-ex:hover { opacity: 0.7; }
 
-/* ── HISTORY VIEW ── */
+/* ── BUTTONS ── */
+.btn-primary {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  padding: 16px;
+  width: 100%;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  margin-bottom: 10px;
+}
+.btn-primary:hover { opacity: 0.9; }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--surface2);
+  color: var(--text2);
+  border: none;
+  padding: 14px;
+  width: 100%;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-secondary:hover { background: var(--surface3); color: var(--text); }
+
+.btn-whoop {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border2);
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-whoop:hover { background: var(--surface3); color: var(--text); }
+
+/* ── HISTORY ── */
 .history-toolbar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 16px;
   flex-wrap: wrap;
 }
-.history-toolbar .filter-group { display: flex; gap: 5px; flex-wrap: wrap; }
+.filter-chips { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
 .ftag {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border: 1px solid var(--border);
-  background: var(--paper2);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: var(--surface);
+  color: var(--text3);
   cursor: pointer;
-  border-radius: 2px;
   transition: all 0.1s;
-  color: var(--muted);
 }
-.ftag:hover, .ftag.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-.history-toolbar input[type=search] {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  padding: 5px 10px;
-  border: 1px solid var(--border);
-  background: var(--paper);
-  color: var(--ink);
-  border-radius: 2px;
+.ftag:hover { color: var(--text2); border-color: var(--text3); }
+.ftag.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.search-box {
+  font-family: inherit;
+  font-size: 13px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: var(--surface);
+  color: var(--text);
   outline: none;
-  width: 180px;
+  width: 160px;
+  transition: border-color 0.1s;
 }
-.history-toolbar input[type=search]:focus { border-color: var(--ink); }
+.search-box:focus { border-color: var(--text3); }
+.search-box::placeholder { color: var(--text3); }
 
-.sessions-list { display: flex; flex-direction: column; gap: 10px; }
 .session-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--ink);
-  border-radius: 2px;
+  background: var(--surface);
+  border-radius: var(--radius);
   overflow: hidden;
-  transition: box-shadow 0.15s;
-}
-.session-card:hover { box-shadow: 3px 3px 0 var(--border); }
-.session-card[data-type="lower"] { border-left-color: #3b82f6; }
-.session-card[data-type="push"]  { border-left-color: #ec4899; }
-.session-card[data-type="pull"]  { border-left-color: #10b981; }
-.session-card[data-type="meta"]  { border-left-color: #f59e0b; }
-
-.sc-header {
-  padding: 10px 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  background: var(--paper2);
-  border-bottom: 1px solid transparent;
+  margin-bottom: 10px;
   transition: background 0.1s;
 }
-.sc-header:hover { background: var(--paper3); }
-.sc-header.open { border-bottom-color: var(--border); }
-.sc-date { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
-.sc-type { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-.sc-preview { font-size: 10px; color: var(--muted); margin-left: auto; max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sc-toggle { color: var(--muted); font-size: 11px; margin-left: 8px; transition: transform 0.2s; }
-.sc-toggle.open { transform: rotate(90deg); }
-
-.sc-body { padding: 14px; display: none; }
-.sc-body.open { display: block; }
-.sc-body table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
-.sc-body th { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0 6px 4px; border-bottom: 1px solid var(--border); }
-.sc-body td { font-size: 11px; padding: 4px 6px; border-bottom: 1px solid #f0ece3; }
-.sc-body td:nth-child(2), .sc-body td:nth-child(3), .sc-body td:nth-child(4) { text-align: center; color: var(--muted); }
-.sc-note { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 6px; }
-.sc-checks { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
-.sc-check { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; background: #e8f5ee; color: var(--green); }
-.sc-actions { display: flex; gap: 6px; margin-top: 10px; }
-.btn-sm {
-  font-family: 'Space Mono', monospace;
-  font-size: 8px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 4px 8px;
+.sc-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   cursor: pointer;
-  border-radius: 2px;
-  border: 1px solid var(--border);
-  background: none;
-  color: var(--muted);
+}
+.sc-header:hover { background: var(--surface2); }
+.sc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text3);
+  flex-shrink: 0;
+}
+.sc-info { flex: 1; min-width: 0; }
+.sc-date { font-size: 13px; font-weight: 600; color: var(--text); }
+.sc-type { font-size: 12px; color: var(--text2); margin-top: 1px; }
+.sc-preview { font-size: 12px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+.sc-arrow { color: var(--text3); font-size: 12px; transition: transform 0.2s; flex-shrink: 0; }
+.sc-arrow.open { transform: rotate(90deg); }
+
+.sc-body { display: none; border-top: 1px solid var(--border); }
+.sc-body.open { display: block; }
+.sc-body table { width: 100%; border-collapse: collapse; }
+.sc-body th { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text3); padding: 10px 16px 6px; text-align: left; }
+.sc-body td { font-size: 13px; padding: 6px 16px; border-bottom: 1px solid var(--border); color: var(--text2); }
+.sc-body td:first-child { color: var(--text); }
+.sc-body td:nth-child(2), .sc-body td:nth-child(3), .sc-body td:nth-child(4) { text-align: center; }
+.sc-cardio { font-size: 12px; color: var(--green); padding: 8px 16px; }
+.sc-note { font-size: 13px; color: var(--text2); padding: 8px 16px 4px; font-style: italic; }
+.sc-actions { padding: 10px 16px 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-sm {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text2);
+  cursor: pointer;
   transition: all 0.1s;
 }
-.btn-sm:hover { background: var(--paper2); color: var(--ink); }
-.btn-sm.danger:hover { background: #fef2f2; color: var(--red); border-color: var(--red); }
+.btn-sm:hover { background: var(--surface3); color: var(--text); }
+.btn-sm.danger:hover { background: var(--red); border-color: var(--red); color: white; }
+.btn-sm.whoop { color: var(--green); border-color: #1a3a1a; background: #0d1f0d; }
+.btn-sm.whoop:hover { background: #152b15; }
 
-/* ── TEMPLATES VIEW ── */
-.template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+/* ── TEMPLATES ── */
+.tmpl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 32px; }
 .tmpl-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  overflow: hidden;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
   cursor: pointer;
-  transition: box-shadow 0.15s, transform 0.1s;
+  transition: background 0.1s, transform 0.1s;
+  border: 1px solid transparent;
 }
-.tmpl-card:hover { box-shadow: 4px 4px 0 var(--border); transform: translate(-1px, -1px); }
-.tmpl-header {
+.tmpl-card:hover { background: var(--surface2); transform: translateY(-1px); border-color: var(--border2); }
+.tmpl-icon { font-size: 24px; margin-bottom: 8px; }
+.tmpl-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.tmpl-tag { font-size: 11px; color: var(--text3); margin-bottom: 10px; }
+.tmpl-exercises { font-size: 11px; color: var(--text2); line-height: 1.8; }
+.tmpl-use {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 12px;
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background: var(--surface3);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.1s;
+  text-align: center;
+}
+.tmpl-use:hover { background: var(--text); color: var(--bg); }
+
+/* ── TEMPLATE EDITOR ── */
+.editor-section { margin-top: 8px; }
+.editor-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text3);
+  margin-bottom: 12px;
+}
+.tmpl-edit-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.tmpl-edit-head {
   padding: 12px 14px;
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--paper2);
   border-bottom: 1px solid var(--border);
+  background: var(--surface2);
 }
-.tmpl-icon { font-size: 18px; }
-.tmpl-name { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
-.tmpl-tag { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-.tmpl-body { padding: 12px 14px; }
-.tmpl-ex { font-size: 10px; color: var(--muted); padding: 2px 0; border-bottom: 1px dotted var(--border); }
-.tmpl-ex:last-child { border: none; }
-.tmpl-use-btn {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin: 10px 14px 12px;
-  display: block;
-  width: calc(100% - 28px);
-  padding: 7px;
-  background: none;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  border-radius: 2px;
-  color: var(--ink);
-  transition: all 0.1s;
-}
-.tmpl-use-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-
-/* ── TEMPLATE EDITOR ── */
-.tmpl-editor-wrap { margin-top: 28px; border-top: 1px solid var(--border); padding-top: 22px; }
-.tmpl-editor-title { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 14px; }
-.tmpl-edit-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  margin-bottom: 12px;
-  overflow: hidden;
-}
-.tmpl-edit-header {
-  background: var(--paper2);
-  border-bottom: 1px solid var(--border);
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.tmpl-edit-header input {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  font-weight: 700;
+.tmpl-edit-head input[type=text] {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
   background: transparent;
   border: none;
-  color: var(--ink);
+  color: var(--text);
   outline: none;
   flex: 1;
-  min-width: 0;
+  text-align: left;
 }
-.tmpl-edit-header input:focus { background: var(--paper); border-radius: 2px; padding: 2px 6px; }
-.tmpl-edit-header select {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  background: var(--paper);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  padding: 3px 6px;
-  border-radius: 2px;
+.tmpl-edit-head input[type=text]:first-of-type { max-width: 30px; }
+.tmpl-edit-head select {
+  font-family: inherit;
+  font-size: 11px;
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  padding: 4px 8px;
+  border-radius: 6px;
   outline: none;
   cursor: pointer;
+  text-align: left;
+  width: auto;
 }
-.tmpl-edit-header .btn-del-tmpl {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  width: 24px; height: 24px;
-  border-radius: 2px;
+.btn-del-tmpl {
+  font-family: inherit;
+  font-size: 14px;
+  width: 26px; height: 26px;
+  background: var(--surface3);
+  border: none;
+  color: var(--text3);
   cursor: pointer;
-  display: flex; align-items: center; justify-content: center; padding: 0;
-  flex-shrink: 0;
-  transition: all 0.1s;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0; transition: all 0.1s;
 }
-.tmpl-edit-header .btn-del-tmpl:hover { color: var(--red); border-color: var(--red); background: #fef2f2; }
-.tmpl-edit-body { padding: 10px 12px; }
-.tmpl-edit-cardio {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
+.btn-del-tmpl:hover { background: var(--red); color: white; }
+.tmpl-edit-body { padding: 10px 14px; }
+.tmpl-cardio-input {
+  font-family: inherit;
+  font-size: 12px;
   width: 100%;
-  background: var(--paper);
+  background: var(--surface3);
   border: 1px solid var(--border);
-  color: var(--ink);
-  padding: 5px 8px;
-  border-radius: 2px;
+  color: var(--text2);
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
   outline: none;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
-.tmpl-edit-cardio:focus { border-color: var(--ink); }
+.tmpl-cardio-input:focus { border-color: var(--text3); color: var(--text); }
 .tmpl-ex-edit-row {
   display: grid;
-  grid-template-columns: 1fr 64px 56px 52px 24px;
+  grid-template-columns: 1fr 60px 52px 52px 28px;
   gap: 4px;
-  margin-bottom: 4px;
-  animation: fadeSlide 0.12s ease;
+  margin-bottom: 5px;
+  animation: fadeIn 0.12s ease;
 }
 .tmpl-ex-edit-row input {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  background: var(--paper);
+  font-family: inherit;
+  font-size: 12px;
+  background: var(--surface3);
   border: 1px solid var(--border);
-  color: var(--ink);
-  padding: 4px 6px;
-  border-radius: 2px;
+  color: var(--text);
+  padding: 5px 8px;
+  border-radius: 6px;
   outline: none;
   width: 100%;
   text-align: center;
 }
 .tmpl-ex-edit-row input:first-child { text-align: left; }
-.tmpl-ex-edit-row input:focus { border-color: var(--ink); }
+.tmpl-ex-edit-row input:focus { border-color: var(--text3); }
 .btn-add-tmpl-ex {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--green); background: none;
-  border: 1px dashed var(--green);
-  padding: 4px 8px; width: 100%;
-  cursor: pointer; border-radius: 2px; margin-top: 4px;
-  transition: background 0.1s;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue);
+  background: none;
+  border: none;
+  padding: 8px 0;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 0.1s;
+  margin-top: 2px;
 }
-.btn-add-tmpl-ex:hover { background: #eef7f2; }
-.tmpl-editor-actions { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
+.btn-add-tmpl-ex:hover { opacity: 0.7; }
+.editor-actions { display: flex; gap: 8px; margin-top: 14px; }
 .btn-add-tmpl {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-  background: var(--paper); color: var(--ink);
-  border: 1px solid var(--border);
-  padding: 8px 14px; cursor: pointer; border-radius: 2px;
-  transition: all 0.1s;
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  background: var(--surface); color: var(--text2);
+  border: 1px solid var(--border2);
+  padding: 10px 16px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.1s;
 }
-.btn-add-tmpl:hover { background: var(--paper2); border-color: var(--ink); }
+.btn-add-tmpl:hover { background: var(--surface2); color: var(--text); }
 .btn-save-tmpls {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-  background: var(--ink); color: var(--paper);
-  border: 2px solid var(--ink);
-  padding: 8px 18px; cursor: pointer; border-radius: 2px;
-  transition: all 0.1s; margin-left: auto;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  background: var(--text); color: var(--bg);
+  border: none;
+  padding: 10px 20px; border-radius: var(--radius-sm); cursor: pointer; transition: opacity 0.1s;
+  margin-left: auto;
 }
-.btn-save-tmpls:hover { background: var(--green); border-color: var(--green); }
-
-/* ── EMPTY STATE ── */
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--muted);
-}
-.empty-state .big { font-size: 40px; margin-bottom: 12px; }
-.empty-state p { font-size: 11px; letter-spacing: 1px; }
+.btn-save-tmpls:hover { opacity: 0.85; }
 
 /* ── TOAST ── */
 .toast {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background: var(--ink);
-  color: var(--paper);
-  padding: 10px 18px;
-  font-size: 11px;
-  letter-spacing: 1px;
-  border-radius: 3px;
-  border-left: 4px solid var(--green);
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--surface3);
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 24px;
   z-index: 9999;
-  transform: translateY(60px);
   opacity: 0;
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
   pointer-events: none;
+  white-space: nowrap;
+  backdrop-filter: blur(20px);
 }
-.toast.show { transform: translateY(0); opacity: 1; }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
 /* ── MODAL ── */
 .modal-bg {
   position: fixed; inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
   z-index: 500;
   display: none;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  padding: 20px;
 }
 .modal-bg.open { display: flex; }
 .modal {
-  background: var(--paper);
-  border: 1px solid var(--border);
-  border-radius: 3px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
   padding: 24px;
+  width: 100%;
   max-width: 420px;
-  width: 90%;
-  box-shadow: 8px 8px 0 rgba(0,0,0,0.15);
 }
-.modal h3 { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 8px; }
-.modal p { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
+.modal h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.modal p { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
 
+/* ── EMPTY ── */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text3);
+}
+.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state p { font-size: 13px; }
+
 /* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--paper2); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 700px) {
-  .log-layout { grid-template-columns: 1fr; }
-  .main { padding: 14px; }
-  header { padding: 0 16px; }
+@media (max-width: 600px) {
+  header { padding: 12px 16px 10px; }
+  .main { padding: 16px; }
+  .tabs { padding: 0 16px; }
   .header-stats { display: none; }
+  .sc-preview { display: none; }
 }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Workout Log</h1>
-  <span style="font-size:9px;letter-spacing:2px;color:#888;text-transform:uppercase;background:#2a2a27;padding:2px 7px;border-radius:2px">v5</span>
-  <div class="header-divider"></div>
-  <div class="header-stats">
-    <div class="stat-chip">Sessions: <span id="hdr-count">0</span></div>
-    <div class="stat-chip">This Week: <span id="hdr-week">0</span></div>
-    <div class="stat-chip">Streak: <span id="hdr-streak">0</span>d</div>
-  </div>
-  <div class="header-actions">
-    <button class="btn-hdr" id="sync-btn" onclick="openSyncModal()">☁ Sync</button>
-    <button class="btn-hdr" onclick="exportData()">↓ Export</button>
-    <label class="btn-hdr" style="cursor:pointer" title="Import JSON backup">
-      ↑ Import <input type="file" accept=".json" style="display:none" onchange="importData(event)">
-    </label>
+  <div class="header-inner">
+    <h1>Workout Log <span style="font-weight:300;color:var(--text3);font-size:13px">2026</span></h1>
+    <span style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.5px">V2.0</span>
+    <div class="header-stats">
+      <div class="stat-item"><div class="stat-val" id="hdr-count">0</div><div class="stat-lbl">Total</div></div>
+      <div class="stat-item"><div class="stat-val" id="hdr-week">0</div><div class="stat-lbl">Week</div></div>
+      <div class="stat-item"><div class="stat-val" id="hdr-streak">0</div><div class="stat-lbl">Streak</div></div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-hdr" onclick="exportData()">Export</button>
+      <label class="btn-hdr" style="cursor:pointer">Import
+        <input type="file" accept=".json" style="display:none" onchange="importData(event)">
+      </label>
+    </div>
   </div>
 </header>
 
 <div class="tabs">
-  <button class="tab active" onclick="showTab('log')">▶ Log Session</button>
-  <button class="tab" onclick="showTab('history')">≡ History</button>
-  <button class="tab" onclick="showTab('templates')">◈ Templates</button>
+  <button class="tab active" onclick="showTab('log')">Log</button>
+  <button class="tab" onclick="showTab('history')">History</button>
+  <button class="tab" onclick="showTab('templates')">Templates</button>
 </div>
 
 <!-- ═══ LOG TAB ═══ -->
 <div id="tab-log" class="main" style="display:block">
-  <div class="log-layout">
-    <!-- LEFT: Session Meta -->
-    <div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="card-header">
-          <span class="card-title">Session Info</span>
-        </div>
-        <div class="card-body">
-          <div class="row2">
-            <div class="field">
-              <label>Date</label>
-              <input type="date" id="f-date">
-            </div>
-            <div class="field">
-              <label>Week #</label>
-              <input type="text" id="f-week" placeholder="W11">
-            </div>
-          </div>
-          <div class="row2">
-            <div class="field">
-              <label>Day Type</label>
-              <select id="f-type">
-                <option value="lower">🟦 Lower</option>
-                <option value="push">🟦 Push</option>
-                <option value="pull">🟦 Pull</option>
-                <option value="meta">🟦 Metabolic + Core</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>Bodyweight (kg)</label>
-              <input type="number" id="f-bw" placeholder="—" step="0.1">
-            </div>
-          </div>
-          <div class="field">
-            <label>Cardio</label>
-            <input type="text" id="f-cardio" placeholder="e.g. Incline Walk 30min Zone 2">
-          </div>
-        </div>
-      </div>
 
-      <!-- Note + Save -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Note</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <textarea id="f-note" placeholder="สั้น ๆ ก็ได้..." style="min-height:72px"></textarea>
-          </div>
-          <button class="btn-log" onclick="saveSession()">✦ Save Session</button>
-          <button class="btn-log" style="background:none;color:var(--ink);border:2px solid var(--ink);margin-bottom:6px" onclick="copyForWhoop()">⎘ Copy for WHOOP</button>
-          <button class="btn-clear" onclick="clearForm()">Clear Form</button>
-        </div>
-      </div>
+  <div class="section-label">Session</div>
+  <div class="card">
+    <div class="card-row">
+      <span class="row-label">Date</span>
+      <input type="date" id="f-date">
     </div>
+    <div class="card-row">
+      <span class="row-label">Week</span>
+      <input type="text" id="f-week" placeholder="W22">
+    </div>
+    <div class="card-row">
+      <span class="row-label">Day</span>
+      <input type="text" id="f-type" placeholder="e.g. Mon – Heavy Legs" list="day-suggestions">
+      <datalist id="day-suggestions">
+        <option value="Mon – Heavy Legs">
+        <option value="Tue – Chest + Shoulders">
+        <option value="Wed – Recovery">
+        <option value="Thu – Lighter Legs">
+        <option value="Fri – Light Upper">
+        <option value="Sat – Back + Shoulders">
+        <option value="Sun – Rest">
+      </datalist>
+    </div>
+    <div class="card-row">
+      <span class="row-label">Weight</span>
+      <input type="number" id="f-bw" placeholder="—" step="0.1">
+      <span style="color:var(--text3);font-size:12px;margin-left:4px">kg</span>
+    </div>
+    <div class="card-row" style="flex-direction:column;align-items:stretch;gap:4px">
+      <span class="row-label muted">Cardio</span>
+      <input type="text" id="f-cardio" placeholder="e.g. 20 min Zone 2 walk" style="text-align:left">
+    </div>
+  </div>
 
-    <!-- RIGHT: Exercises -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">Exercises</span>
-        <span class="day-badge day-lower" id="day-badge-display">Lower</span>
-      </div>
-      <div class="card-body">
-        <table class="ex-table">
-          <thead>
-            <tr>
-              <th>Exercise</th>
-              <th>Weight</th>
-              <th>Reps</th>
-              <th>Sets</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="ex-tbody"></tbody>
-        </table>
-        <button class="btn-add-ex" onclick="addExRow()">+ Add Exercise</button>
-      </div>
+  <div class="section-label">Exercises</div>
+  <div class="card" id="ex-card">
+    <div class="ex-col-headers">
+      <span>Exercise</span><span>kg</span><span>Reps</span><span>Sets</span><span></span>
     </div>
+    <div id="ex-tbody"></div>
+    <button class="btn-add-ex" onclick="addExRow()">+ Add Exercise</button>
+  </div>
+
+  <div class="section-label">Note</div>
+  <textarea id="f-note" placeholder="How did it feel?"></textarea>
+
+  <div style="margin-top:16px">
+    <button class="btn-primary" onclick="saveSession()">Save Session</button>
+    <button class="btn-secondary" onclick="clearForm()">Clear</button>
   </div>
 </div>
 
 <!-- ═══ HISTORY TAB ═══ -->
 <div id="tab-history" class="main" style="display:none">
   <div class="history-toolbar">
-    <div class="filter-group">
+    <div class="filter-chips">
       <button class="ftag active" data-filter="all" onclick="filterSessions(this)">All</button>
-      <button class="ftag" data-filter="lower" onclick="filterSessions(this)">Lower</button>
-      <button class="ftag" data-filter="push" onclick="filterSessions(this)">Push</button>
-      <button class="ftag" data-filter="pull" onclick="filterSessions(this)">Pull</button>
-      <button class="ftag" data-filter="meta" onclick="filterSessions(this)">Metabolic</button>
+      <button class="ftag" data-filter="legs" onclick="filterSessions(this)">Legs</button>
+      <button class="ftag" data-filter="chest" onclick="filterSessions(this)">Push</button>
+      <button class="ftag" data-filter="back" onclick="filterSessions(this)">Pull</button>
+      <button class="ftag" data-filter="recovery" onclick="filterSessions(this)">Recovery</button>
     </div>
-    <input type="search" id="search-input" placeholder="Search exercise..." oninput="renderHistory()">
-    <button class="btn-hdr" style="margin-left:auto" onclick="if(confirm('Clear ALL data?')) { localStorage.removeItem(STORE); updateHeaderStats(); renderHistory(); toast('Cleared.'); }">Clear All</button>
+    <input type="search" class="search-box" id="search-input" placeholder="Search…" oninput="renderHistory()">
   </div>
-  <div class="sessions-list" id="sessions-list"></div>
+  <div id="sessions-list"></div>
 </div>
 
 <!-- ═══ TEMPLATES TAB ═══ -->
 <div id="tab-templates" class="main" style="display:none">
-  <p style="font-size:11px;color:var(--muted);margin-bottom:16px;letter-spacing:0.5px">Click a template to pre-fill the log form.</p>
-  <div class="template-grid" id="template-grid"></div>
+  <div class="section-label">Tap to use</div>
+  <div class="tmpl-grid" id="template-grid"></div>
 
-  <!-- EDITOR -->
-  <div class="tmpl-editor-wrap">
-    <div class="tmpl-editor-title">Edit Templates</div>
+  <div class="editor-section">
+    <div class="editor-section-label">Edit Templates</div>
     <div id="tmpl-editor-list"></div>
-    <div class="tmpl-editor-actions">
-      <button class="btn-add-tmpl" onclick="addNewTemplate()">+ New Template</button>
-      <button class="btn-save-tmpls" onclick="saveTemplates()">✦ Save Changes</button>
+    <div class="editor-actions">
+      <button class="btn-add-tmpl" onclick="addNewTemplate()">+ New</button>
+      <button class="btn-save-tmpls" onclick="saveTemplates()">Save Changes</button>
     </div>
   </div>
 </div>
-
-<!-- SYNC MODAL -->
-<div class="modal-bg" id="sync-modal-bg">
-  <div class="modal" style="max-width:480px">
-    <h3>☁ Cloud Sync</h3>
-    <p style="margin-bottom:12px">Sync workouts across all devices using <strong>JSONBin.io</strong> (free).<br>
-    <a href="https://jsonbin.io" target="_blank" style="color:var(--green);font-size:10px;letter-spacing:1px">Get free API key at jsonbin.io →</a></p>
-
-    <div class="field">
-      <label>API Key (X-Master-Key)</label>
-      <input type="password" id="sync-apikey" placeholder="$2b$10$..." autocomplete="off">
-    </div>
-    <div class="field">
-      <label>Bin ID <span style="font-weight:400;color:var(--muted)">(leave blank on first device — auto-creates)</span></label>
-      <input type="text" id="sync-binid" placeholder="64abc123...">
-    </div>
-
-    <div id="sync-status" style="font-size:10px;color:var(--muted);min-height:16px;margin-bottom:12px;letter-spacing:0.5px"></div>
-
-    <div class="modal-actions" style="flex-wrap:wrap;gap:6px">
-      <button class="btn-sm" onclick="closeSyncModal()">Cancel</button>
-      <button class="btn-sm" onclick="syncPull()">↓ Pull from Cloud</button>
-      <button class="btn-sm" onclick="syncPush()">↑ Push to Cloud</button>
-      <button class="btn-sm danger" onclick="clearSyncConfig()">Disconnect</button>
-      <button class="btn-sm" style="background:var(--ink);color:var(--paper);border-color:var(--ink);margin-left:auto" onclick="saveSyncConfig()">Save Config</button>
-    </div>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
 
 <!-- CONFIRM MODAL -->
 <div class="modal-bg" id="modal-bg">
@@ -794,12 +773,16 @@ header h1 {
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
-const STORE = 'workoutLog_2026';
+const STORE      = 'workoutLog_2026';
+const TMPL_STORE = 'workoutTemplates_2026';
 let currentFilter = 'all';
 let modalCallback = null;
+let _editingTemplates = null;
 
-// ── DEFAULT TEMPLATES (W11 program) ──
+// ── TEMPLATES ──
 const DEFAULT_TEMPLATES = [
   {
     id: 'mon-heavy-legs',
@@ -877,66 +860,10 @@ const DEFAULT_TEMPLATES = [
     cardio: '15–20 min | Zone 1 only | Very easy walk or easy bike',
     exercises: []
   },
-  // ── v1 / W11 (archived) ──
-  {
-    id: 'w11-lower',
-    name: 'W11 – Day 1 Lower',
-    type: 'lower',
-    icon: '📋',
-    cardio: 'Incline Walk / Bike 30min Zone 2',
-    exercises: [
-      { name: 'Calf Raise (Machine)',    weight: '54',   reps: '20', sets: '3' },
-      { name: 'Incline BP Machine (S5)',weight: '70',   reps: '10', sets: '3' },
-      { name: 'Leg Press (S2)',          weight: '136',  reps: '12', sets: '3' },
-      { name: 'RDL (DB)',                weight: '55lb', reps: '12', sets: '3' },
-    ]
-  },
-  {
-    id: 'w11-push',
-    name: 'W11 – Day 2 Push',
-    type: 'push',
-    icon: '📋',
-    cardio: 'Elliptical / Fast Walk 30min',
-    exercises: [
-      { name: 'Chest Press (S5)',        weight: '90',   reps: '8',  sets: '3' },
-      { name: 'Lateral Raise',           weight: '20lb', reps: '15', sets: '3' },
-      { name: 'Shoulder Press (S5)',     weight: '54',   reps: '8',  sets: '3' },
-      { name: 'Machine Chest Fly (S4)', weight: '66',   reps: '8',  sets: '1' },
-    ]
-  },
-  {
-    id: 'w11-pull',
-    name: 'W11 – Day 3 Pull',
-    type: 'pull',
-    icon: '📋',
-    cardio: 'Row / Bike Steady 30min',
-    exercises: [
-      { name: 'Lat Pulldown (Neutral)', weight: '40', reps: '12', sets: '3' },
-      { name: 'Seated Row (S4)',        weight: '45', reps: '10', sets: '3' },
-      { name: 'Face Pull / Rear Delt',  weight: '23', reps: '12', sets: '3' },
-      { name: 'Rear Delt Fly (S6)',     weight: '23', reps: '12', sets: '3' },
-    ]
-  },
-  {
-    id: 'w11-meta',
-    name: 'W11 – Day 4 Metabolic',
-    type: 'meta',
-    icon: '📋',
-    cardio: 'Walk / Bike 30min (เบา ยาว)',
-    exercises: [
-      { name: 'Goblet Squat',           weight: '24',      reps: '12',  sets: '3' },
-      { name: 'Farmer Carry',           weight: '28/side', reps: '40s', sets: '3' },
-      { name: 'Lower Back Extension',   weight: '15',      reps: '12',  sets: '2' },
-      { name: 'Plank / Dead Bug',       weight: 'BW',      reps: '45s', sets: '3' },
-    ]
-  },
 ];
 
 // ── STORAGE ──
-function getData() {
-  try { return JSON.parse(localStorage.getItem(STORE)) || []; }
-  catch { return []; }
-}
+function getData() { try { return JSON.parse(localStorage.getItem(STORE)) || []; } catch { return []; } }
 function saveData(d) { localStorage.setItem(STORE, JSON.stringify(d)); }
 
 // ── TABS ──
@@ -958,8 +885,6 @@ function initForm() {
   document.getElementById('f-week').value = 'W' + getWeekNum(d);
   document.getElementById('ex-tbody').innerHTML = '';
   addExRow(); addExRow(); addExRow();
-  updateDayBadge();
-  document.getElementById('f-type').addEventListener('change', updateDayBadge);
 }
 
 function getWeekNum(date) {
@@ -970,32 +895,23 @@ function getWeekNum(date) {
   return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
 }
 
-function updateDayBadge() {
-  const t = document.getElementById('f-type').value;
-  const badge = document.getElementById('day-badge-display');
-  const map = { lower: ['Lower', 'day-lower'], push: ['Push', 'day-push'], pull: ['Pull', 'day-pull'], meta: ['Metabolic', 'day-meta'], other: ['Other', 'day-meta'] };
-  const [label, cls] = map[t] || ['Session', 'day-meta'];
-  badge.textContent = label;
-  badge.className = 'day-badge ' + cls;
-}
-
 function addExRow(ex) {
-  const tbody = document.getElementById('ex-tbody');
-  const tr = document.createElement('tr');
-  tr.className = 'ex-row-anim';
-  tr.innerHTML = `
-    <td><input type="text" placeholder="Exercise name" value="${ex?.name||''}" style="text-align:left;width:100%"></td>
-    <td><input type="text" placeholder="—" value="${ex?.weight||''}"></td>
-    <td><input type="text" placeholder="—" value="${ex?.reps||''}"></td>
-    <td><input type="text" placeholder="—" value="${ex?.sets||''}"></td>
-    <td><button class="btn-del-ex" onclick="this.closest('tr').remove()">×</button></td>
+  const container = document.getElementById('ex-tbody');
+  const div = document.createElement('div');
+  div.className = 'ex-row';
+  div.innerHTML = `
+    <input type="text" placeholder="Exercise name" value="${ex?.name||''}" style="text-align:left">
+    <input type="text" placeholder="—" value="${ex?.weight||''}">
+    <input type="text" placeholder="—" value="${ex?.reps||''}">
+    <input type="text" placeholder="—" value="${ex?.sets||''}">
+    <button class="btn-del-ex" onclick="this.closest('.ex-row').remove()">−</button>
   `;
-  tbody.appendChild(tr);
+  container.appendChild(div);
 }
 
 function getExercises() {
-  return Array.from(document.querySelectorAll('#ex-tbody tr')).map(tr => {
-    const inputs = tr.querySelectorAll('input');
+  return Array.from(document.querySelectorAll('#ex-tbody .ex-row')).map(row => {
+    const inputs = row.querySelectorAll('input');
     return { name: inputs[0].value.trim(), weight: inputs[1].value.trim(), reps: inputs[2].value.trim(), sets: inputs[3].value.trim() };
   }).filter(e => e.name);
 }
@@ -1004,32 +920,33 @@ function clearForm() {
   document.getElementById('f-bw').value = '';
   document.getElementById('f-cardio').value = '';
   document.getElementById('f-note').value = '';
+  document.getElementById('f-type').value = '';
   document.getElementById('ex-tbody').innerHTML = '';
   addExRow(); addExRow(); addExRow();
 }
 
 function saveSession() {
-  const date = document.getElementById('f-date').value;
-  const type = document.getElementById('f-type').value;
+  const date    = document.getElementById('f-date').value;
+  const cardio  = document.getElementById('f-cardio').value.trim();
   const exercises = getExercises();
-  if (!date || exercises.length === 0) { toast('Add date + at least 1 exercise', true); return; }
+  if (!date) { toast('Please add a date'); return; }
+  if (!exercises.length && !cardio) { toast('Add at least one exercise or cardio'); return; }
 
   const session = {
     id: Date.now(),
     date,
-    week: document.getElementById('f-week').value,
-    type,
+    week:       document.getElementById('f-week').value,
+    type:       document.getElementById('f-type').value,
     bodyweight: document.getElementById('f-bw').value,
-    cardio: document.getElementById('f-cardio').value,
+    cardio,
     exercises,
-    note: document.getElementById('f-note').value
+    note:       document.getElementById('f-note').value
   };
-
   const data = getData();
   data.unshift(session);
   saveData(data);
   updateHeaderStats();
-  toast('✦ Session saved!');
+  toast('Session saved');
   clearForm();
 }
 
@@ -1042,56 +959,57 @@ function filterSessions(el) {
 }
 
 function renderHistory() {
-  const list = document.getElementById('sessions-list');
+  const list   = document.getElementById('sessions-list');
   const search = (document.getElementById('search-input')?.value || '').toLowerCase();
   let data = getData();
-  if (currentFilter !== 'all') data = data.filter(s => s.type === currentFilter);
-  if (search) data = data.filter(s => s.exercises.some(e => e.name.toLowerCase().includes(search)) || (s.note||'').toLowerCase().includes(search));
+  if (currentFilter !== 'all') data = data.filter(s => (s.type||'').toLowerCase().includes(currentFilter));
+  if (search) data = data.filter(s =>
+    (s.exercises||[]).some(e => e.name.toLowerCase().includes(search)) ||
+    (s.note||'').toLowerCase().includes(search) ||
+    (s.type||'').toLowerCase().includes(search) ||
+    (s.cardio||'').toLowerCase().includes(search)
+  );
 
-  if (data.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="big">📋</div><p>No sessions yet. Log your first workout!</p></div>`;
+  if (!data.length) {
+    list.innerHTML = `<div class="empty-state"><div class="icon">📋</div><p>No sessions yet.</p></div>`;
     return;
   }
 
-  const typeLabel = { lower: '🟦 Lower', push: '🟦 Push', pull: '🟦 Pull', meta: '🟦 Metabolic + Core', other: 'Other' };
   list.innerHTML = data.map(s => {
-    const exPreview = s.exercises.slice(0, 3).map(e => e.name).join(' · ') + (s.exercises.length > 3 ? ` +${s.exercises.length - 3}` : '');
-    const rows = s.exercises.map(e => `<tr><td>${e.name}</td><td>${e.weight||'—'}</td><td>${e.reps||'—'}</td><td>${e.sets||'—'}</td></tr>`).join('');
-    const checks = s.checks?.map(c => {
-      const labels = { 'reps-left': '2 reps left', 'no-fail': 'No fails', 'back-ok': 'Back OK', 'want-more': 'Wants more' };
-      return `<span class="sc-check">${labels[c]||c}</span>`;
-    }).join('') || '';
+    const preview = (s.exercises||[]).slice(0,2).map(e=>e.name).join(' · ')
+      || (s.cardio ? '🏃 Cardio' : '—');
+    const rows = (s.exercises||[]).map(e =>
+      `<tr><td>${e.name}</td><td>${e.weight||'—'}</td><td>${e.reps||'—'}</td><td>${e.sets||'—'}</td></tr>`
+    ).join('');
+
     return `
-      <div class="session-card" data-type="${s.type}" data-id="${s.id}">
-        <div class="sc-header" onclick="toggleCard(this)">
-          <div>
-            <div class="sc-date">${s.date} <span style="color:var(--muted);font-size:10px">${s.week||''}</span></div>
-            <div class="sc-type">${typeLabel[s.type]||s.type}${s.bodyweight ? ' · ' + s.bodyweight + ' kg' : ''}</div>
-          </div>
-          <div class="sc-preview">${exPreview}</div>
-          <span class="sc-toggle">▶</span>
+    <div class="session-card" data-id="${s.id}">
+      <div class="sc-header" onclick="toggleCard(this)">
+        <div class="sc-dot"></div>
+        <div class="sc-info">
+          <div class="sc-date">${s.date} <span style="color:var(--text3);font-weight:400;font-size:11px">${s.week||''}</span></div>
+          <div class="sc-type">${s.type||'Session'}${s.bodyweight?' · '+s.bodyweight+' kg':''}</div>
         </div>
-        <div class="sc-body">
-          <table>
-            <thead><tr><th>Exercise</th><th>Weight</th><th>Reps</th><th>Sets</th></tr></thead>
-            <tbody>${rows}</tbody>
-          </table>
-          ${s.cardio ? `<div style="font-size:10px;color:var(--muted);margin-bottom:6px">🏃 ${s.cardio}</div>` : ''}
-          ${checks ? `<div class="sc-checks">${checks}</div>` : ''}
-          ${s.note ? `<div class="sc-note">"${s.note}"</div>` : ''}
-          <div class="sc-actions">
-            <button class="btn-sm" onclick="loadSession(${s.id})">Load to Form</button>
-            <button class="btn-sm danger" onclick="deleteSession(${s.id})">Delete</button>
-          </div>
+        <div class="sc-preview">${preview}</div>
+        <span class="sc-arrow">›</span>
+      </div>
+      <div class="sc-body">
+        ${rows ? `<table><thead><tr><th>Exercise</th><th>kg</th><th>Reps</th><th>Sets</th></tr></thead><tbody>${rows}</tbody></table>` : ''}
+        ${s.cardio ? `<div class="sc-cardio">🏃 ${s.cardio}</div>` : ''}
+        ${s.note   ? `<div class="sc-note">${s.note}</div>` : ''}
+        <div class="sc-actions">
+          <button class="btn-sm whoop" onclick="copySessionForWhoop(${s.id})">⎘ Copy for WHOOP</button>
+          <button class="btn-sm" onclick="loadSession(${s.id})">Load</button>
+          <button class="btn-sm danger" onclick="deleteSession(${s.id})">Delete</button>
         </div>
-      </div>`;
+      </div>
+    </div>`;
   }).join('');
 }
 
 function toggleCard(el) {
-  el.classList.toggle('open');
+  el.querySelector('.sc-arrow').classList.toggle('open');
   el.nextElementSibling.classList.toggle('open');
-  el.querySelector('.sc-toggle').classList.toggle('open');
 }
 
 function loadSession(id) {
@@ -1099,208 +1017,185 @@ function loadSession(id) {
   if (!s) return;
   document.getElementById('f-date').value = s.date;
   document.getElementById('f-week').value = s.week || '';
-  document.getElementById('f-type').value = s.type;
-  document.getElementById('f-bw').value = s.bodyweight || '';
+  document.getElementById('f-type').value = s.type || '';
+  document.getElementById('f-bw').value   = s.bodyweight || '';
   document.getElementById('f-cardio').value = s.cardio || '';
   document.getElementById('f-note').value = s.note || '';
   document.getElementById('ex-tbody').innerHTML = '';
-  s.exercises.forEach(e => addExRow(e));
-  updateDayBadge();
+  (s.exercises||[]).forEach(e => addExRow(e));
   showTab('log');
-  toast('Session loaded to form');
+  toast('Session loaded');
 }
 
 function deleteSession(id) {
   showModal('Delete Session', 'This cannot be undone.', () => {
-    const data = getData().filter(s => s.id !== id);
-    saveData(data);
+    saveData(getData().filter(s => s.id !== id));
     updateHeaderStats();
     renderHistory();
-    toast('Deleted.');
+    toast('Deleted');
+  });
+}
+
+// ── COPY FOR WHOOP ──
+function copySessionForWhoop(id) {
+  const s = getData().find(s => s.id === id);
+  if (!s) return;
+  const lines = [];
+  lines.push(`${s.week ? s.week + ' · ' : ''}${s.type || 'Session'} · ${s.date}`);
+  if (s.bodyweight) lines.push(`BW: ${s.bodyweight} kg`);
+  lines.push('');
+  if ((s.exercises||[]).length) {
+    lines.push('Strength:');
+    s.exercises.forEach(e => {
+      const parts = [e.weight, e.reps&&e.reps+' reps', e.sets&&e.sets+' sets'].filter(Boolean);
+      lines.push(`  • ${e.name}${parts.length?' — '+parts.join(' × '):''}`);
+    });
+    lines.push('');
+  }
+  if (s.cardio) { lines.push('Cardio:'); lines.push(`  ${s.cardio}`); lines.push(''); }
+  if (s.note) lines.push(`Note: ${s.note}`);
+
+  const text = lines.join('\n').trim();
+  navigator.clipboard.writeText(text).then(() => toast('Copied for WHOOP')).catch(() => {
+    const ta = Object.assign(document.createElement('textarea'), { value: text, style: 'position:fixed;opacity:0' });
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    toast('Copied for WHOOP');
   });
 }
 
 // ── TEMPLATES ──
-const TMPL_STORE = 'workoutTemplates_2026';
-
 function getTemplates() {
   try {
-    const saved = JSON.parse(localStorage.getItem(TMPL_STORE));
-    return saved && saved.length ? saved : JSON.parse(JSON.stringify(DEFAULT_TEMPLATES));
+    const s = JSON.parse(localStorage.getItem(TMPL_STORE));
+    return s && s.length ? s : JSON.parse(JSON.stringify(DEFAULT_TEMPLATES));
   } catch { return JSON.parse(JSON.stringify(DEFAULT_TEMPLATES)); }
 }
 
 function renderTemplates() {
   const tmpls = getTemplates();
-  const grid = document.getElementById('template-grid');
+  const grid  = document.getElementById('template-grid');
   grid.innerHTML = tmpls.map(t => `
     <div class="tmpl-card" onclick="useTemplate('${t.id}')">
-      <div class="tmpl-header">
-        <span class="tmpl-icon">${t.icon||'📋'}</span>
-        <div>
-          <div class="tmpl-name">${t.name}</div>
-          <div class="tmpl-tag">${t.type.toUpperCase()}</div>
-        </div>
-      </div>
-      <div class="tmpl-body">
-        ${t.exercises.map(e => `<div class="tmpl-ex">· ${e.name}${e.weight?' — '+e.weight:''}${e.reps?' × '+e.reps:''}${e.sets?' × '+e.sets:''}</div>`).join('')}
-        ${t.cardio ? `<div class="tmpl-ex" style="color:var(--green)">🏃 ${t.cardio}</div>` : ''}
-      </div>
-      <button class="tmpl-use-btn" onclick="event.stopPropagation();useTemplate('${t.id}')">Use Template →</button>
-    </div>
-  `).join('');
-
+      <div class="tmpl-icon">${t.icon||'📋'}</div>
+      <div class="tmpl-name">${t.name}</div>
+      <div class="tmpl-tag">${t.type}</div>
+      <div class="tmpl-exercises">${t.exercises.slice(0,3).map(e=>`· ${e.name}`).join('<br>')}</div>
+      ${t.cardio?`<div style="font-size:11px;color:var(--green);margin-top:6px">🏃 ${t.cardio.split('|')[0].trim()}</div>`:''}
+      <button class="tmpl-use" onclick="event.stopPropagation();useTemplate('${t.id}')">Use →</button>
+    </div>`).join('');
   renderTemplateEditor(tmpls);
-}
-
-function renderTemplateEditor(tmpls) {
-  const list = document.getElementById('tmpl-editor-list');
-  list.innerHTML = tmpls.map((t, ti) => `
-    <div class="tmpl-edit-card" data-ti="${ti}">
-      <div class="tmpl-edit-header">
-        <input type="text" value="${escHtml(t.icon||'📋')}" style="width:32px;text-align:center" placeholder="🏋️" oninput="tmplField(${ti},'icon',this.value)">
-        <input type="text" value="${escHtml(t.name)}" placeholder="Template name" style="flex:1" oninput="tmplField(${ti},'name',this.value)">
-        <select onchange="tmplField(${ti},'type',this.value)">
-          ${['lower','push','pull','meta','other'].map(v => `<option value="${v}"${t.type===v?' selected':''}>${v}</option>`).join('')}
-        </select>
-        <button class="btn-del-tmpl" onclick="deleteTemplate(${ti})" title="Delete template">×</button>
-      </div>
-      <div class="tmpl-edit-body">
-        <input class="tmpl-edit-cardio" type="text" placeholder="Cardio (optional)" value="${escHtml(t.cardio||'')}" oninput="tmplField(${ti},'cardio',this.value)">
-        <div class="ex-header-labels" style="display:grid;grid-template-columns:1fr 64px 56px 52px 24px;gap:4px;margin-bottom:3px">
-          <span style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding-left:6px">Exercise</span>
-          <span style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:center">Weight</span>
-          <span style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:center">Reps</span>
-          <span style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:center">Sets</span>
-          <span></span>
-        </div>
-        <div id="tmpl-exrows-${ti}">
-          ${t.exercises.map((e,ei) => tmplExRow(ti,ei,e)).join('')}
-        </div>
-        <button class="btn-add-tmpl-ex" onclick="addTmplExRow(${ti})">+ Add Exercise</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-function tmplExRow(ti, ei, e) {
-  return `<div class="tmpl-ex-edit-row" id="tmpl-ex-${ti}-${ei}">
-    <input type="text" placeholder="Exercise name" value="${escHtml(e.name||'')}" style="text-align:left" oninput="tmplExField(${ti},${ei},'name',this.value)">
-    <input type="text" placeholder="—" value="${escHtml(e.weight||'')}" oninput="tmplExField(${ti},${ei},'weight',this.value)">
-    <input type="text" placeholder="—" value="${escHtml(e.reps||'')}" oninput="tmplExField(${ti},${ei},'reps',this.value)">
-    <input type="text" placeholder="—" value="${escHtml(e.sets||'')}" oninput="tmplExField(${ti},${ei},'sets',this.value)">
-    <button class="btn-del-ex" onclick="deleteTmplEx(${ti},${ei})">×</button>
-  </div>`;
-}
-
-// In-memory working copy of templates
-let _editingTemplates = null;
-
-function getEditingTemplates() {
-  if (!_editingTemplates) _editingTemplates = getTemplates();
-  return _editingTemplates;
-}
-
-function tmplField(ti, field, val) {
-  getEditingTemplates()[ti][field] = val;
-}
-
-function tmplExField(ti, ei, field, val) {
-  getEditingTemplates()[ti].exercises[ei][field] = val;
-}
-
-function addTmplExRow(ti) {
-  const tmpls = getEditingTemplates();
-  const newEx = { name: '', weight: '', reps: '', sets: '' };
-  tmpls[ti].exercises.push(newEx);
-  const ei = tmpls[ti].exercises.length - 1;
-  const container = document.getElementById(`tmpl-exrows-${ti}`);
-  const div = document.createElement('div');
-  div.innerHTML = tmplExRow(ti, ei, newEx);
-  container.appendChild(div.firstElementChild);
-}
-
-function deleteTmplEx(ti, ei) {
-  const tmpls = getEditingTemplates();
-  tmpls[ti].exercises.splice(ei, 1);
-  const snapshot = JSON.parse(JSON.stringify(tmpls)); // deep copy before re-render
-  renderTemplates();
-  _editingTemplates = snapshot; // restore unsaved state after re-render
-}
-
-function deleteTemplate(ti) {
-  if (!confirm('Delete this template?')) return;
-  getEditingTemplates().splice(ti, 1);
-  saveTemplates(true);
-}
-
-function addNewTemplate() {
-  const tmpls = getEditingTemplates();
-  tmpls.push({
-    id: 'tmpl_' + Date.now(),
-    name: 'New Template',
-    type: 'other',
-    icon: '📋',
-    cardio: '',
-    exercises: [{ name: '', weight: '', reps: '', sets: '' }]
-  });
-  saveTemplates(true);
-}
-
-function saveTemplates(silent) {
-  const tmpls = getEditingTemplates();
-  localStorage.setItem(TMPL_STORE, JSON.stringify(tmpls));
-  _editingTemplates = null;
-  renderTemplates();
-  if (!silent) toast('Templates saved ✓');
 }
 
 function useTemplate(id) {
   const t = getTemplates().find(t => t.id === id);
   if (!t) return;
-  document.getElementById('f-type').value = t.type;
+  const typeMap = { lower:'Lower', push:'Push', pull:'Pull', meta:'Metabolic', other:'Other' };
+  document.getElementById('f-type').value   = t.name || typeMap[t.type] || t.type;
   document.getElementById('f-cardio').value = t.cardio || '';
   document.getElementById('ex-tbody').innerHTML = '';
   t.exercises.forEach(e => addExRow(e));
-  updateDayBadge();
   showTab('log');
-  toast('Template loaded → fill in your actuals');
+  toast('Template loaded');
+}
+
+// ── TEMPLATE EDITOR ──
+function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function renderTemplateEditor(tmpls) {
+  const list = document.getElementById('tmpl-editor-list');
+  list.innerHTML = tmpls.map((t,ti) => `
+    <div class="tmpl-edit-card">
+      <div class="tmpl-edit-head">
+        <input type="text" value="${escH(t.icon||'📋')}" style="max-width:28px;text-align:center" oninput="_et(${ti},'icon',this.value)">
+        <input type="text" value="${escH(t.name)}" placeholder="Name" oninput="_et(${ti},'name',this.value)">
+        <select onchange="_et(${ti},'type',this.value)">
+          ${['lower','push','pull','meta','other'].map(v=>`<option value="${v}"${t.type===v?' selected':''}>${v}</option>`).join('')}
+        </select>
+        <button class="btn-del-tmpl" onclick="deleteTmpl(${ti})">×</button>
+      </div>
+      <div class="tmpl-edit-body">
+        <input class="tmpl-cardio-input" type="text" placeholder="Cardio" value="${escH(t.cardio||'')}" oninput="_et(${ti},'cardio',this.value)">
+        <div id="et-exrows-${ti}">
+          ${t.exercises.map((e,ei)=>tmplExRowHTML(ti,ei,e)).join('')}
+        </div>
+        <button class="btn-add-tmpl-ex" onclick="addTmplEx(${ti})">+ Add Exercise</button>
+      </div>
+    </div>`).join('');
+}
+
+function tmplExRowHTML(ti,ei,e) {
+  return `<div class="tmpl-ex-edit-row" id="et-ex-${ti}-${ei}">
+    <input type="text" value="${escH(e.name||'')}" placeholder="Exercise" style="text-align:left" oninput="_ete(${ti},${ei},'name',this.value)">
+    <input type="text" value="${escH(e.weight||'')}" placeholder="kg" oninput="_ete(${ti},${ei},'weight',this.value)">
+    <input type="text" value="${escH(e.reps||'')}" placeholder="reps" oninput="_ete(${ti},${ei},'reps',this.value)">
+    <input type="text" value="${escH(e.sets||'')}" placeholder="sets" oninput="_ete(${ti},${ei},'sets',this.value)">
+    <button class="btn-del-ex" style="width:26px;height:26px" onclick="deleteTmplEx(${ti},${ei})">−</button>
+  </div>`;
+}
+
+function getET() { if (!_editingTemplates) _editingTemplates = getTemplates(); return _editingTemplates; }
+function _et(ti,f,v)      { getET()[ti][f]=v; }
+function _ete(ti,ei,f,v)  { getET()[ti].exercises[ei][f]=v; }
+
+function addTmplEx(ti) {
+  const t = getET()[ti];
+  const newEx = { name:'', weight:'', reps:'', sets:'' };
+  t.exercises.push(newEx);
+  const ei = t.exercises.length - 1;
+  const div = document.createElement('div');
+  div.innerHTML = tmplExRowHTML(ti, ei, newEx);
+  document.getElementById(`et-exrows-${ti}`).appendChild(div.firstElementChild);
+}
+
+function deleteTmplEx(ti, ei) {
+  const tmpls = getET();
+  tmpls[ti].exercises.splice(ei, 1);
+  const snap = JSON.parse(JSON.stringify(tmpls));
+  renderTemplates();
+  _editingTemplates = snap;
+}
+
+function deleteTmpl(ti) {
+  if (!confirm('Delete this template?')) return;
+  getET().splice(ti, 1);
+  saveTemplates(true);
+}
+
+function addNewTemplate() {
+  getET().push({ id:'tmpl_'+Date.now(), name:'New Template', type:'other', icon:'📋', cardio:'', exercises:[{name:'',weight:'',reps:'',sets:''}] });
+  saveTemplates(true);
+}
+
+function saveTemplates(silent) {
+  localStorage.setItem(TMPL_STORE, JSON.stringify(getET()));
+  _editingTemplates = null;
+  renderTemplates();
+  if (!silent) toast('Templates saved');
 }
 
 // ── STATS ──
 function updateHeaderStats() {
   const data = getData();
   document.getElementById('hdr-count').textContent = data.length;
-  const today = new Date();
-  const weekStart = new Date(today);
-  weekStart.setDate(today.getDate() - today.getDay() + 1);
-  const thisWeek = data.filter(s => new Date(s.date) >= weekStart).length;
-  document.getElementById('hdr-week').textContent = thisWeek;
-
-  // streak
-  const dates = [...new Set(data.map(s => s.date))].sort().reverse();
-  let streak = 0;
-  let check = new Date(); check.setHours(0,0,0,0);
+  const weekStart = new Date(); weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1); weekStart.setHours(0,0,0,0);
+  document.getElementById('hdr-week').textContent = data.filter(s => new Date(s.date) >= weekStart).length;
+  const dates = [...new Set(data.map(s=>s.date))].sort().reverse();
+  let streak = 0, check = new Date(); check.setHours(0,0,0,0);
   for (const d of dates) {
     const sd = new Date(d); sd.setHours(0,0,0,0);
-    const diff = (check - sd) / 86400000;
-    if (diff <= 1) { streak++; check = sd; }
-    else break;
+    if ((check - sd) / 86400000 <= 1) { streak++; check = sd; } else break;
   }
   document.getElementById('hdr-streak').textContent = streak;
 }
 
 // ── EXPORT / IMPORT ──
 function exportData() {
-  const data = getData();
-  const blob = new Blob([JSON.stringify({ version: 1, exported: new Date().toISOString(), sessions: data }, null, 2)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify({ version:1, exported:new Date().toISOString(), sessions:getData() },null,2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `workout-log-${new Date().toISOString().split('T')[0]}.json`;
   a.click();
-  toast('Exported ✓');
+  toast('Exported');
 }
 
 function importData(event) {
@@ -1311,28 +1206,27 @@ function importData(event) {
     try {
       const parsed = JSON.parse(e.target.result);
       const sessions = parsed.sessions || parsed;
-      if (!Array.isArray(sessions)) throw new Error('bad format');
+      if (!Array.isArray(sessions)) throw new Error();
       const existing = getData();
-      const ids = new Set(existing.map(s => s.id));
-      const merged = [...existing, ...sessions.filter(s => !ids.has(s.id))];
-      merged.sort((a, b) => new Date(b.date) - new Date(a.date));
+      const ids = new Set(existing.map(s=>s.id));
+      const merged = [...existing, ...sessions.filter(s=>!ids.has(s.id))];
+      merged.sort((a,b) => new Date(b.date) - new Date(a.date));
       saveData(merged);
       updateHeaderStats();
       toast(`Imported ${sessions.length} sessions`);
-    } catch { toast('Import failed — check file format', true); }
+    } catch { toast('Import failed'); }
   };
   reader.readAsText(file);
   event.target.value = '';
 }
 
 // ── TOAST ──
-function toast(msg, err) {
+function toast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg;
-  el.style.borderLeftColor = err ? 'var(--red)' : 'var(--green)';
   el.classList.add('show');
   clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+  el._t = setTimeout(() => el.classList.remove('show'), 2500);
 }
 
 // ── MODAL ──
@@ -1346,201 +1240,9 @@ function showModal(title, msg, cb) {
 function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
 document.getElementById('modal-bg').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 
-// ── COPY FOR WHOOP ──
-function copyForWhoop() {
-  const date    = document.getElementById('f-date').value;
-  const week    = document.getElementById('f-week').value;
-  const type    = document.getElementById('f-type').value;
-  const bw      = document.getElementById('f-bw').value;
-  const cardio  = document.getElementById('f-cardio').value;
-  const note    = document.getElementById('f-note').value;
-  const exs     = getExercises();
-
-  const typeLabel = { lower: 'Lower', push: 'Push', pull: 'Pull', meta: 'Metabolic + Core', other: 'Other' };
-  const lines = [];
-
-  lines.push(`${week ? week + ' · ' : ''}${typeLabel[type] || type}${date ? ' · ' + date : ''}`);
-  if (bw) lines.push(`BW: ${bw} kg`);
-  lines.push('');
-
-  if (exs.length) {
-    lines.push('Strength:');
-    exs.forEach(e => {
-      let s = `  • ${e.name}`;
-      const parts = [e.weight, e.reps, e.sets].filter(Boolean);
-      if (parts.length) s += ` — ${[e.weight, e.reps && e.reps + ' reps', e.sets && e.sets + ' sets'].filter(Boolean).join(' × ')}`;
-      lines.push(s);
-    });
-    lines.push('');
-  }
-
-  if (cardio) {
-    lines.push('Cardio:');
-    lines.push(`  ${cardio}`);
-    lines.push('');
-  }
-
-  if (note) {
-    lines.push(`Note: ${note}`);
-  }
-
-  const text = lines.join('\n').trim();
-
-  if (!text) { toast('Nothing to copy yet', true); return; }
-
-  navigator.clipboard.writeText(text).then(() => {
-    toast('⎘ Copied! Paste into WHOOP journal');
-  }).catch(() => {
-    // fallback for older browsers
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    toast('⎘ Copied! Paste into WHOOP journal');
-  });
-}
-
-// ── CLOUD SYNC (JSONBin.io) ──
-const SYNC_KEY_STORE  = 'wl_sync_apikey';
-const SYNC_BIN_STORE  = 'wl_sync_binid';
-const JSONBIN_BASE    = 'https://api.jsonbin.io/v3';
-
-function getSyncConfig() {
-  return {
-    apiKey: localStorage.getItem(SYNC_KEY_STORE) || '',
-    binId:  localStorage.getItem(SYNC_BIN_STORE) || ''
-  };
-}
-
-function openSyncModal() {
-  const { apiKey, binId } = getSyncConfig();
-  document.getElementById('sync-apikey').value = apiKey;
-  document.getElementById('sync-binid').value  = binId;
-  setSyncStatus('');
-  document.getElementById('sync-modal-bg').classList.add('open');
-  updateSyncBtn();
-}
-
-function closeSyncModal() {
-  document.getElementById('sync-modal-bg').classList.remove('open');
-}
-
-function saveSyncConfig() {
-  const apiKey = document.getElementById('sync-apikey').value.trim();
-  const binId  = document.getElementById('sync-binid').value.trim();
-  if (!apiKey) { setSyncStatus('⚠ API key required', true); return; }
-  localStorage.setItem(SYNC_KEY_STORE, apiKey);
-  localStorage.setItem(SYNC_BIN_STORE, binId);
-  setSyncStatus('Config saved ✓');
-  updateSyncBtn();
-}
-
-function clearSyncConfig() {
-  localStorage.removeItem(SYNC_KEY_STORE);
-  localStorage.removeItem(SYNC_BIN_STORE);
-  document.getElementById('sync-apikey').value = '';
-  document.getElementById('sync-binid').value  = '';
-  setSyncStatus('Disconnected');
-  updateSyncBtn();
-}
-
-function setSyncStatus(msg, err) {
-  const el = document.getElementById('sync-status');
-  el.textContent = msg;
-  el.style.color = err ? 'var(--red)' : 'var(--green)';
-}
-
-function updateSyncBtn() {
-  const btn = document.getElementById('sync-btn');
-  const { apiKey } = getSyncConfig();
-  btn.textContent = apiKey ? '☁ Synced' : '☁ Sync';
-  btn.style.color = apiKey ? '#6ee7b7' : '';
-  btn.style.borderColor = apiKey ? '#6ee7b7' : '';
-}
-
-async function syncPush() {
-  const apiKey = document.getElementById('sync-apikey').value.trim();
-  let   binId  = document.getElementById('sync-binid').value.trim();
-  if (!apiKey) { setSyncStatus('⚠ Enter API key first', true); return; }
-
-  setSyncStatus('Pushing…');
-  const payload = { sessions: getData(), pushed: new Date().toISOString() };
-
-  try {
-    let res, data;
-    if (!binId) {
-      // Create new bin
-      res = await fetch(`${JSONBIN_BASE}/b`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Master-Key': apiKey, 'X-Bin-Name': 'workout-log-2026' },
-        body: JSON.stringify(payload)
-      });
-      data = await res.json();
-      if (!res.ok) throw new Error(data.message || res.status);
-      binId = data.metadata.id;
-      localStorage.setItem(SYNC_BIN_STORE, binId);
-      document.getElementById('sync-binid').value = binId;
-      setSyncStatus(`✓ Created bin & pushed! Bin ID: ${binId}`);
-    } else {
-      // Update existing bin
-      res = await fetch(`${JSONBIN_BASE}/b/${binId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'X-Master-Key': apiKey },
-        body: JSON.stringify(payload)
-      });
-      data = await res.json();
-      if (!res.ok) throw new Error(data.message || res.status);
-      setSyncStatus(`✓ Pushed ${getData().length} sessions to cloud`);
-    }
-    localStorage.setItem(SYNC_KEY_STORE, apiKey);
-    updateSyncBtn();
-    toast('☁ Pushed to cloud ✓');
-  } catch(e) {
-    setSyncStatus(`✗ Push failed: ${e.message}`, true);
-  }
-}
-
-async function syncPull() {
-  const apiKey = document.getElementById('sync-apikey').value.trim();
-  const binId  = document.getElementById('sync-binid').value.trim();
-  if (!apiKey || !binId) { setSyncStatus('⚠ API key + Bin ID required to pull', true); return; }
-
-  setSyncStatus('Pulling…');
-  try {
-    const res  = await fetch(`${JSONBIN_BASE}/b/${binId}/latest`, {
-      headers: { 'X-Master-Key': apiKey }
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || res.status);
-
-    const sessions = data.record?.sessions;
-    if (!Array.isArray(sessions)) throw new Error('No sessions found in bin');
-
-    // Merge: cloud wins on conflict (same id → keep cloud version)
-    const local   = getData();
-    const cloudIds = new Set(sessions.map(s => s.id));
-    const merged  = [...sessions, ...local.filter(s => !cloudIds.has(s.id))];
-    merged.sort((a, b) => new Date(b.date) - new Date(a.date));
-    saveData(merged);
-    localStorage.setItem(SYNC_KEY_STORE, apiKey);
-    localStorage.setItem(SYNC_BIN_STORE, binId);
-    document.getElementById('sync-binid').value = binId;
-    updateSyncBtn();
-    updateHeaderStats();
-    setSyncStatus(`✓ Pulled ${sessions.length} sessions from cloud`);
-    toast(`☁ Pulled ${sessions.length} sessions ✓`);
-  } catch(e) {
-    setSyncStatus(`✗ Pull failed: ${e.message}`, true);
-  }
-}
-
 // ── INIT ──
 initForm();
 updateHeaderStats();
-updateSyncBtn();
 </script>
 </body>
 </html>
