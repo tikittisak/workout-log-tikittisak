@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Workout Log 2026 — v3</title>
+<title>Workout Log 2026 — v5</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -613,7 +613,7 @@ header h1 {
 
 <header>
   <h1>Workout Log</h1>
-  <span style="font-size:9px;letter-spacing:2px;color:#888;text-transform:uppercase;background:#2a2a27;padding:2px 7px;border-radius:2px">v3</span>
+  <span style="font-size:9px;letter-spacing:2px;color:#888;text-transform:uppercase;background:#2a2a27;padding:2px 7px;border-radius:2px">v5</span>
   <div class="header-divider"></div>
   <div class="header-stats">
     <div class="stat-chip">Sessions: <span id="hdr-count">0</span></div>
@@ -621,6 +621,7 @@ header h1 {
     <div class="stat-chip">Streak: <span id="hdr-streak">0</span>d</div>
   </div>
   <div class="header-actions">
+    <button class="btn-hdr" id="sync-btn" onclick="openSyncModal()">☁ Sync</button>
     <button class="btn-hdr" onclick="exportData()">↓ Export</button>
     <label class="btn-hdr" style="cursor:pointer" title="Import JSON backup">
       ↑ Import <input type="file" accept=".json" style="display:none" onchange="importData(event)">
@@ -687,6 +688,7 @@ header h1 {
             <textarea id="f-note" placeholder="สั้น ๆ ก็ได้..." style="min-height:72px"></textarea>
           </div>
           <button class="btn-log" onclick="saveSession()">✦ Save Session</button>
+          <button class="btn-log" style="background:none;color:var(--ink);border:2px solid var(--ink);margin-bottom:6px" onclick="copyForWhoop()">⎘ Copy for WHOOP</button>
           <button class="btn-clear" onclick="clearForm()">Clear Form</button>
         </div>
       </div>
@@ -749,6 +751,34 @@ header h1 {
   </div>
 </div>
 
+<!-- SYNC MODAL -->
+<div class="modal-bg" id="sync-modal-bg">
+  <div class="modal" style="max-width:480px">
+    <h3>☁ Cloud Sync</h3>
+    <p style="margin-bottom:12px">Sync workouts across all devices using <strong>JSONBin.io</strong> (free).<br>
+    <a href="https://jsonbin.io" target="_blank" style="color:var(--green);font-size:10px;letter-spacing:1px">Get free API key at jsonbin.io →</a></p>
+
+    <div class="field">
+      <label>API Key (X-Master-Key)</label>
+      <input type="password" id="sync-apikey" placeholder="$2b$10$..." autocomplete="off">
+    </div>
+    <div class="field">
+      <label>Bin ID <span style="font-weight:400;color:var(--muted)">(leave blank on first device — auto-creates)</span></label>
+      <input type="text" id="sync-binid" placeholder="64abc123...">
+    </div>
+
+    <div id="sync-status" style="font-size:10px;color:var(--muted);min-height:16px;margin-bottom:12px;letter-spacing:0.5px"></div>
+
+    <div class="modal-actions" style="flex-wrap:wrap;gap:6px">
+      <button class="btn-sm" onclick="closeSyncModal()">Cancel</button>
+      <button class="btn-sm" onclick="syncPull()">↓ Pull from Cloud</button>
+      <button class="btn-sm" onclick="syncPush()">↑ Push to Cloud</button>
+      <button class="btn-sm danger" onclick="clearSyncConfig()">Disconnect</button>
+      <button class="btn-sm" style="background:var(--ink);color:var(--paper);border-color:var(--ink);margin-left:auto" onclick="saveSyncConfig()">Save Config</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -776,7 +806,7 @@ const DEFAULT_TEMPLATES = [
     name: 'Mon – Heavy Legs',
     type: 'lower',
     icon: '🦵',
-    cardio: '5–10 min easy walk warm-up + 10–15 min easy walk later. No Stairmaster.',
+    cardio: '15–25 min | Zone 1, brief low Zone 2 | Easy walk or bike',
     exercises: [
       { name: 'Leg Press (S2)',           weight: '136', reps: '8',  sets: '3' },
       { name: 'RDL (DB)',                 weight: '55lb', reps: '8',  sets: '3' },
@@ -788,7 +818,7 @@ const DEFAULT_TEMPLATES = [
     name: 'Tue – Chest + Shoulders',
     type: 'push',
     icon: '💪',
-    cardio: '10–15 min very easy Stairmaster OR brisk walk (RPE ~6/10)',
+    cardio: '15–20 min | Zone 2, brief Zone 1 warm/cool | Easy Stairmaster, brisk walk, or light row',
     exercises: [
       { name: 'Incline / Machine Bench Press', weight: '70',  reps: '8',     sets: '3' },
       { name: 'Back-off Bench (optional)',      weight: '50',  reps: '10',    sets: '2' },
@@ -801,7 +831,7 @@ const DEFAULT_TEMPLATES = [
     name: 'Wed – Recovery',
     type: 'other',
     icon: '🧘',
-    cardio: '25–30 min total easy walking (2–3 short walks). No lifting.',
+    cardio: '25–30 min | Zone 1–low Zone 2 only | Easy walk or easy bike, no pushing',
     exercises: []
   },
   {
@@ -809,7 +839,7 @@ const DEFAULT_TEMPLATES = [
     name: 'Thu – Lighter Legs',
     type: 'lower',
     icon: '🦿',
-    cardio: '5–10 min easy walk pre- or post-workout. No hard Stairmaster.',
+    cardio: '10–15 min | Zone 1, maybe low Zone 2 | Short walk or light bike',
     exercises: [
       { name: 'Lunges / Split Squats',    weight: '',   reps: '8/leg', sets: '3' },
       { name: 'Hamstring RDL or Curl',    weight: '',   reps: '10',    sets: '3' },
@@ -821,7 +851,7 @@ const DEFAULT_TEMPLATES = [
     name: 'Fri – Light Upper / Movement',
     type: 'push',
     icon: '🏃',
-    cardio: '20–25 min walking OR 10–15 min easy Stairmaster + walking',
+    cardio: '20–25 min | Zone 2, some Zone 1 warm/cool | Stairmaster, rower, or brisk walk',
     exercises: [
       { name: 'Rows (easy pump)',   weight: '', reps: '12', sets: '3' },
       { name: 'Push-ups',          weight: 'BW', reps: '15', sets: '3' },
@@ -832,7 +862,7 @@ const DEFAULT_TEMPLATES = [
     name: 'Sat – Back + Shoulders',
     type: 'pull',
     icon: '🏋️',
-    cardio: '5–10 min easy walk warm-up. +10 min easy Stairmaster if Recovery is green.',
+    cardio: '5–10 min warm-up Zone 1–2 | If Recovery green: +10–15 min Zone 2 | Walk or Stairmaster',
     exercises: [
       { name: 'Lat Pulldown (Narrow)',  weight: '40', reps: '8–10', sets: '3' },
       { name: 'Seated Row',            weight: '40', reps: '8–10', sets: '3' },
@@ -844,7 +874,7 @@ const DEFAULT_TEMPLATES = [
     name: 'Sun – Rest',
     type: 'other',
     icon: '😴',
-    cardio: 'Easy walking 3,200–4,000+ steps only. No lifting.',
+    cardio: '15–20 min | Zone 1 only | Very easy walk or easy bike',
     exercises: []
   },
   // ── v1 / W11 (archived) ──
@@ -1316,9 +1346,201 @@ function showModal(title, msg, cb) {
 function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
 document.getElementById('modal-bg').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 
+// ── COPY FOR WHOOP ──
+function copyForWhoop() {
+  const date    = document.getElementById('f-date').value;
+  const week    = document.getElementById('f-week').value;
+  const type    = document.getElementById('f-type').value;
+  const bw      = document.getElementById('f-bw').value;
+  const cardio  = document.getElementById('f-cardio').value;
+  const note    = document.getElementById('f-note').value;
+  const exs     = getExercises();
+
+  const typeLabel = { lower: 'Lower', push: 'Push', pull: 'Pull', meta: 'Metabolic + Core', other: 'Other' };
+  const lines = [];
+
+  lines.push(`${week ? week + ' · ' : ''}${typeLabel[type] || type}${date ? ' · ' + date : ''}`);
+  if (bw) lines.push(`BW: ${bw} kg`);
+  lines.push('');
+
+  if (exs.length) {
+    lines.push('Strength:');
+    exs.forEach(e => {
+      let s = `  • ${e.name}`;
+      const parts = [e.weight, e.reps, e.sets].filter(Boolean);
+      if (parts.length) s += ` — ${[e.weight, e.reps && e.reps + ' reps', e.sets && e.sets + ' sets'].filter(Boolean).join(' × ')}`;
+      lines.push(s);
+    });
+    lines.push('');
+  }
+
+  if (cardio) {
+    lines.push('Cardio:');
+    lines.push(`  ${cardio}`);
+    lines.push('');
+  }
+
+  if (note) {
+    lines.push(`Note: ${note}`);
+  }
+
+  const text = lines.join('\n').trim();
+
+  if (!text) { toast('Nothing to copy yet', true); return; }
+
+  navigator.clipboard.writeText(text).then(() => {
+    toast('⎘ Copied! Paste into WHOOP journal');
+  }).catch(() => {
+    // fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast('⎘ Copied! Paste into WHOOP journal');
+  });
+}
+
+// ── CLOUD SYNC (JSONBin.io) ──
+const SYNC_KEY_STORE  = 'wl_sync_apikey';
+const SYNC_BIN_STORE  = 'wl_sync_binid';
+const JSONBIN_BASE    = 'https://api.jsonbin.io/v3';
+
+function getSyncConfig() {
+  return {
+    apiKey: localStorage.getItem(SYNC_KEY_STORE) || '',
+    binId:  localStorage.getItem(SYNC_BIN_STORE) || ''
+  };
+}
+
+function openSyncModal() {
+  const { apiKey, binId } = getSyncConfig();
+  document.getElementById('sync-apikey').value = apiKey;
+  document.getElementById('sync-binid').value  = binId;
+  setSyncStatus('');
+  document.getElementById('sync-modal-bg').classList.add('open');
+  updateSyncBtn();
+}
+
+function closeSyncModal() {
+  document.getElementById('sync-modal-bg').classList.remove('open');
+}
+
+function saveSyncConfig() {
+  const apiKey = document.getElementById('sync-apikey').value.trim();
+  const binId  = document.getElementById('sync-binid').value.trim();
+  if (!apiKey) { setSyncStatus('⚠ API key required', true); return; }
+  localStorage.setItem(SYNC_KEY_STORE, apiKey);
+  localStorage.setItem(SYNC_BIN_STORE, binId);
+  setSyncStatus('Config saved ✓');
+  updateSyncBtn();
+}
+
+function clearSyncConfig() {
+  localStorage.removeItem(SYNC_KEY_STORE);
+  localStorage.removeItem(SYNC_BIN_STORE);
+  document.getElementById('sync-apikey').value = '';
+  document.getElementById('sync-binid').value  = '';
+  setSyncStatus('Disconnected');
+  updateSyncBtn();
+}
+
+function setSyncStatus(msg, err) {
+  const el = document.getElementById('sync-status');
+  el.textContent = msg;
+  el.style.color = err ? 'var(--red)' : 'var(--green)';
+}
+
+function updateSyncBtn() {
+  const btn = document.getElementById('sync-btn');
+  const { apiKey } = getSyncConfig();
+  btn.textContent = apiKey ? '☁ Synced' : '☁ Sync';
+  btn.style.color = apiKey ? '#6ee7b7' : '';
+  btn.style.borderColor = apiKey ? '#6ee7b7' : '';
+}
+
+async function syncPush() {
+  const apiKey = document.getElementById('sync-apikey').value.trim();
+  let   binId  = document.getElementById('sync-binid').value.trim();
+  if (!apiKey) { setSyncStatus('⚠ Enter API key first', true); return; }
+
+  setSyncStatus('Pushing…');
+  const payload = { sessions: getData(), pushed: new Date().toISOString() };
+
+  try {
+    let res, data;
+    if (!binId) {
+      // Create new bin
+      res = await fetch(`${JSONBIN_BASE}/b`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': apiKey, 'X-Bin-Name': 'workout-log-2026' },
+        body: JSON.stringify(payload)
+      });
+      data = await res.json();
+      if (!res.ok) throw new Error(data.message || res.status);
+      binId = data.metadata.id;
+      localStorage.setItem(SYNC_BIN_STORE, binId);
+      document.getElementById('sync-binid').value = binId;
+      setSyncStatus(`✓ Created bin & pushed! Bin ID: ${binId}`);
+    } else {
+      // Update existing bin
+      res = await fetch(`${JSONBIN_BASE}/b/${binId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': apiKey },
+        body: JSON.stringify(payload)
+      });
+      data = await res.json();
+      if (!res.ok) throw new Error(data.message || res.status);
+      setSyncStatus(`✓ Pushed ${getData().length} sessions to cloud`);
+    }
+    localStorage.setItem(SYNC_KEY_STORE, apiKey);
+    updateSyncBtn();
+    toast('☁ Pushed to cloud ✓');
+  } catch(e) {
+    setSyncStatus(`✗ Push failed: ${e.message}`, true);
+  }
+}
+
+async function syncPull() {
+  const apiKey = document.getElementById('sync-apikey').value.trim();
+  const binId  = document.getElementById('sync-binid').value.trim();
+  if (!apiKey || !binId) { setSyncStatus('⚠ API key + Bin ID required to pull', true); return; }
+
+  setSyncStatus('Pulling…');
+  try {
+    const res  = await fetch(`${JSONBIN_BASE}/b/${binId}/latest`, {
+      headers: { 'X-Master-Key': apiKey }
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || res.status);
+
+    const sessions = data.record?.sessions;
+    if (!Array.isArray(sessions)) throw new Error('No sessions found in bin');
+
+    // Merge: cloud wins on conflict (same id → keep cloud version)
+    const local   = getData();
+    const cloudIds = new Set(sessions.map(s => s.id));
+    const merged  = [...sessions, ...local.filter(s => !cloudIds.has(s.id))];
+    merged.sort((a, b) => new Date(b.date) - new Date(a.date));
+    saveData(merged);
+    localStorage.setItem(SYNC_KEY_STORE, apiKey);
+    localStorage.setItem(SYNC_BIN_STORE, binId);
+    document.getElementById('sync-binid').value = binId;
+    updateSyncBtn();
+    updateHeaderStats();
+    setSyncStatus(`✓ Pulled ${sessions.length} sessions from cloud`);
+    toast(`☁ Pulled ${sessions.length} sessions ✓`);
+  } catch(e) {
+    setSyncStatus(`✗ Pull failed: ${e.message}`, true);
+  }
+}
+
 // ── INIT ──
 initForm();
 updateHeaderStats();
+updateSyncBtn();
 </script>
 </body>
 </html>
