@@ -429,7 +429,6 @@ select option { background: #fff; }
   border: 1px solid transparent;
 }
 .tmpl-card:hover { background: var(--surface2); transform: translateY(-1px); border-color: var(--border2); }
-.tmpl-icon { font-size: 24px; margin-bottom: 8px; }
 .tmpl-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
 .tmpl-tag { font-size: 11px; color: var(--text3); margin-bottom: 10px; }
 .tmpl-exercises { font-size: 11px; color: var(--text2); line-height: 1.8; }
@@ -888,11 +887,14 @@ function initForm() {
 }
 
 function getWeekNum(date) {
+  // ISO 8601 week number — week starts Monday
   const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  const dayNum = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-  return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+  const dow = d.getUTCDay() === 0 ? 7 : d.getUTCDay(); // Mon=1 … Sun=7
+  d.setUTCDate(d.getUTCDate() + 4 - dow);               // shift to Thursday of same week
+  const jan4 = new Date(Date.UTC(d.getUTCFullYear(), 0, 4)); // Jan 4 is always in W1
+  const jan4dow = jan4.getUTCDay() === 0 ? 7 : jan4.getUTCDay();
+  const w1Monday = new Date(jan4); w1Monday.setUTCDate(jan4.getUTCDate() - (jan4dow - 1));
+  return Math.ceil(((d - w1Monday) / 86400000 + 1) / 7);
 }
 
 function addExRow(ex) {
@@ -1076,7 +1078,6 @@ function renderTemplates() {
   const grid  = document.getElementById('template-grid');
   grid.innerHTML = tmpls.map(t => `
     <div class="tmpl-card" onclick="useTemplate('${t.id}')">
-      <div class="tmpl-icon">${t.icon||'📋'}</div>
       <div class="tmpl-name">${t.name}</div>
       <div class="tmpl-tag">${t.type}</div>
       <div class="tmpl-exercises">${t.exercises.slice(0,3).map(e=>`· ${e.name}`).join('<br>')}</div>
@@ -1106,8 +1107,7 @@ function renderTemplateEditor(tmpls) {
   list.innerHTML = tmpls.map((t,ti) => `
     <div class="tmpl-edit-card">
       <div class="tmpl-edit-head">
-        <input type="text" value="${escH(t.icon||'📋')}" style="max-width:28px;text-align:center" oninput="_et(${ti},'icon',this.value)">
-        <input type="text" value="${escH(t.name)}" placeholder="Name" oninput="_et(${ti},'name',this.value)">
+<input type="text" value="${escH(t.name)}" placeholder="Name" oninput="_et(${ti},'name',this.value)">
         <select onchange="_et(${ti},'type',this.value)">
           ${['lower','push','pull','meta','other'].map(v=>`<option value="${v}"${t.type===v?' selected':''}>${v}</option>`).join('')}
         </select>
