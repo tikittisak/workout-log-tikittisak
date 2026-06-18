@@ -708,7 +708,7 @@ header h1 {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 700px) {
-  :root { --entry-h: 46px; }
+  :root { --entry-h: 38px; }
   .log-layout,
   .log-layout > div:first-child { grid-template-columns: 1fr; }
   .main { padding: 12px 10px 36px; }
@@ -721,7 +721,18 @@ header h1 {
   .tab { padding: 9px 10px; font-size: 9px; letter-spacing: .08em; }
   .card-header { padding: 11px 12px; }
   .card-title { font-size: 9px; letter-spacing: .28em; }
-  .card-body { padding: 12px; }
+  .card-body { padding: 10px; }
+  .field { margin-bottom: 10px; }
+  .field label { font-size: 8px; letter-spacing: .24em; margin-bottom: 4px; }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 13px;
+    padding: 7px 9px;
+    min-height: 38px;
+  }
+  .btn-log { font-size: 10px; padding: 10px; margin-bottom: 6px; }
+  .btn-clear { font-size: 9px; padding: 9px; }
   .row2 { grid-template-columns: 1fr; }
   .ex-table,
   .ex-table thead,
@@ -731,28 +742,36 @@ header h1 {
   .ex-table tr {
     display: grid;
     grid-template-columns: 1fr 1.35fr 34px;
-    gap: 6px;
-    margin-bottom: 10px;
+    gap: 5px;
+    margin-bottom: 0;
+    padding: 8px 0;
+  }
+  .ex-table tr + tr {
+    border-top: 1px solid var(--ui-line);
   }
   .ex-table td:first-child { grid-column: 1 / -1; }
   .ex-table td { display: block; }
   .ex-table th { letter-spacing: .14em; font-size: 8px; padding: 0 4px 6px; }
   .ex-table input,
   .ex-table textarea {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.25;
-    padding: 7px 8px;
+    padding: 6px 8px;
   }
-  .btn-del-ex { width: 34px; height: 46px; font-size: 14px; }
-  .btn-add-ex { font-size: 10px; letter-spacing: .24em; padding: 11px 8px; }
+  .btn-del-ex { width: 34px; height: var(--entry-h); font-size: 13px; }
+  .btn-add-ex { font-size: 9px; letter-spacing: .22em; padding: 10px 8px; margin-top: 10px; }
   .tmpl-ex-edit-row {
     grid-template-columns: 1fr 1.35fr 34px;
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: 5px;
+    margin-bottom: 0;
+    padding: 8px 0;
+  }
+  .tmpl-ex-edit-row + .tmpl-ex-edit-row {
+    border-top: 1px solid var(--ui-line);
   }
   .tmpl-ex-edit-row textarea { grid-column: 1 / -1; }
   .tmpl-ex-edit-row input,
-  .tmpl-ex-edit-row textarea { font-size: 13px; padding: 7px 8px; }
+  .tmpl-ex-edit-row textarea { font-size: 12px; padding: 6px 8px; }
   .ex-header-labels {
     grid-template-columns: 1fr 1.35fr 34px !important;
     gap: 6px !important;
@@ -761,13 +780,19 @@ header h1 {
   .stat-row,
   .stat-head {
     grid-template-columns: 1fr 1.35fr 34px;
-    gap: 6px;
+    gap: 5px;
   }
-  .stat-row { margin-bottom: 12px; }
+  .stat-row {
+    margin-bottom: 0;
+    padding: 8px 0;
+  }
+  .stat-row + .stat-row {
+    border-top: 1px solid var(--ui-line);
+  }
   .stat-row textarea,
   .stat-head span:first-child { grid-column: 1 / -1; }
   .stat-row input,
-  .stat-row textarea { font-size: 13px; padding: 7px 8px; }
+  .stat-row textarea { font-size: 12px; padding: 6px 8px; }
   .stat-head span { font-size: 8px; letter-spacing: .12em; padding: 0 4px 6px; }
   .stat-head span:first-child { border-bottom: none; padding-bottom: 0; }
   .stat-toolbar { margin-bottom: 10px; }
