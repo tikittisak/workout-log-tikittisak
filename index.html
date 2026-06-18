@@ -723,11 +723,20 @@ header h1 {
   .card-title { font-size: 9px; letter-spacing: .28em; }
   .card-body { padding: 12px; }
   .row2 { grid-template-columns: 1fr; }
-  .ex-table { border-spacing: 5px 8px; margin: 0 -5px 12px; }
+  .ex-table,
+  .ex-table thead,
+  .ex-table tbody { display: block; width: 100%; }
+  .ex-table { border-spacing: 0; margin: 0 0 12px; }
+  .ex-table thead { display: none; }
+  .ex-table tr {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr 34px;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .ex-table td:first-child { grid-column: 1 / -1; }
+  .ex-table td { display: block; }
   .ex-table th { letter-spacing: .14em; font-size: 8px; padding: 0 4px 6px; }
-  .ex-table th:nth-child(2) { width: 62px; }
-  .ex-table th:nth-child(3) { width: 86px; }
-  .ex-table th:nth-child(4) { width: 34px; }
   .ex-table input,
   .ex-table textarea {
     font-size: 13px;
@@ -736,14 +745,31 @@ header h1 {
   }
   .btn-del-ex { width: 34px; height: 46px; font-size: 14px; }
   .btn-add-ex { font-size: 10px; letter-spacing: .24em; padding: 11px 8px; }
-  .tmpl-ex-edit-row { grid-template-columns: 1fr 74px 104px 40px; gap:5px; }
+  .tmpl-ex-edit-row {
+    grid-template-columns: 1fr 1.35fr 34px;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .tmpl-ex-edit-row textarea { grid-column: 1 / -1; }
   .tmpl-ex-edit-row input,
-  .tmpl-ex-edit-row textarea { font-size: 14px; padding: 8px; }
+  .tmpl-ex-edit-row textarea { font-size: 13px; padding: 7px 8px; }
+  .ex-header-labels {
+    grid-template-columns: 1fr 1.35fr 34px !important;
+    gap: 6px !important;
+  }
+  .ex-header-labels span:first-child { grid-column: 1 / -1; }
   .stat-row,
-  .stat-head { grid-template-columns: 1fr 62px 86px 34px; gap: 5px; }
+  .stat-head {
+    grid-template-columns: 1fr 1.35fr 34px;
+    gap: 6px;
+  }
+  .stat-row { margin-bottom: 12px; }
+  .stat-row textarea,
+  .stat-head span:first-child { grid-column: 1 / -1; }
   .stat-row input,
   .stat-row textarea { font-size: 13px; padding: 7px 8px; }
   .stat-head span { font-size: 8px; letter-spacing: .12em; padding: 0 4px 6px; }
+  .stat-head span:first-child { border-bottom: none; padding-bottom: 0; }
   .stat-toolbar { margin-bottom: 10px; }
   .stat-search { font-size: 12px; padding: 8px 10px; }
 }
@@ -862,7 +888,7 @@ header h1 {
       <button class="ftag" data-filter="meta" onclick="filterSessions(this)">Metabolic</button>
     </div>
     <input type="search" id="search-input" placeholder="Search exercise..." oninput="renderHistory()">
-    <button class="btn-hdr" style="margin-left:auto" onclick="if(confirm('Clear ALL data?')) { localStorage.removeItem(STORE); updateHeaderStats(); renderHistory(); toast('Cleared.'); }">Clear All</button>
+    <button class="btn-hdr" style="margin-left:auto" onclick="if(confirm('Clear ALL data?')) { localStorage.setItem(STORE, '[]'); localStorage.setItem(STORE_CLEARED, '1'); updateHeaderStats(); renderHistory(); toast('Cleared.'); }">Clear All</button>
   </div>
   <div class="sessions-list" id="sessions-list"></div>
 </div>
@@ -952,6 +978,7 @@ header h1 {
 <script>
 const STORE = 'workoutLog_2026';
 const STORE_SEEDED = 'workoutLog_2026_seeded';
+const STORE_CLEARED = 'workoutLog_2026_cleared';
 let currentFilter = 'all';
 let modalCallback = null;
 
@@ -1405,7 +1432,7 @@ const DEFAULT_SESSIONS = [
 
 // ── STORAGE ──
 function seedInitialData() {
-  if (localStorage.getItem(STORE_SEEDED)) return;
+  if (localStorage.getItem(STORE_CLEARED)) return;
   try {
     const existing = JSON.parse(localStorage.getItem(STORE) || '[]');
     if (Array.isArray(existing) && existing.length) return;
@@ -1414,12 +1441,16 @@ function seedInitialData() {
   localStorage.setItem(STORE_SEEDED, '1');
 }
 
-function normalizeType(type) {
+function normalizeType(type, exercises) {
   const t = String(type || '').toLowerCase();
-  if (['lower','push','pull','meta','other'].includes(t)) return t;
+  const exText = (exercises || []).map(ex => ex?.name || '').join(' ').toLowerCase();
+  if (['lower','push','pull','meta','other'].includes(t)) {
+    if (t === 'push' && /(lat|row|face pull|rear delt)/.test(exText) && !/(chest|bench|push-up|pushup)/.test(exText)) return 'pull';
+    return t;
+  }
   if (t.includes('leg') || t.includes('lower')) return 'lower';
-  if (t.includes('chest') || t.includes('shoulder') || t.includes('push') || t.includes('bench')) return 'push';
   if (t.includes('back') || t.includes('pull') || t.includes('row') || t.includes('lat')) return 'pull';
+  if (t.includes('chest') || t.includes('shoulder') || t.includes('push') || t.includes('bench')) return 'push';
   if (t.includes('meta') || t.includes('core') || t.includes('carry')) return 'meta';
   return 'other';
 }
@@ -1433,13 +1464,14 @@ function normalizeExercise(ex) {
 }
 
 function normalizeSession(session) {
+  const exercises = (session.exercises || []).map(normalizeExercise).filter(ex => ex.name);
   return {
     id: session.id || Date.now(),
     date: session.date || '',
     week: session.week || '',
-    type: normalizeType(session.type),
+    type: normalizeType(session.type, exercises),
     bodyweight: session.bodyweight || '',
-    exercises: (session.exercises || []).map(normalizeExercise).filter(ex => ex.name)
+    exercises
   };
 }
 
@@ -1451,7 +1483,10 @@ function getData() {
   try { return normalizeSessions(JSON.parse(localStorage.getItem(STORE)) || []); }
   catch { return []; }
 }
-function saveData(d) { localStorage.setItem(STORE, JSON.stringify(d)); }
+function saveData(d) {
+  localStorage.setItem(STORE, JSON.stringify(d));
+  if (Array.isArray(d) && d.length) localStorage.removeItem(STORE_CLEARED);
+}
 
 // ── TABS ──
 function showTab(t) {
