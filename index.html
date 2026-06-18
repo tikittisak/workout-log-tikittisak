@@ -1565,8 +1565,8 @@ function addExRow(ex) {
   tr.className = 'ex-row-anim';
   tr.innerHTML = `
     <td><textarea rows="2" placeholder="Exercise name">${escHtml(ex?.name||'')}</textarea></td>
-    <td><input type="text" placeholder="—" value="${ex?.weight||''}"></td>
-    <td><input type="text" placeholder="8 x 3" value="${exVolume(ex)}"></td>
+    <td><input type="text" placeholder="—" value="${escHtml(ex?.weight||'')}"></td>
+    <td><input type="text" placeholder="8 x 3" value="${escHtml(exVolume(ex))}"></td>
     <td><button class="btn-del-ex" onclick="this.closest('tr').remove()">×</button></td>
   `;
   tbody.appendChild(tr);
@@ -1654,6 +1654,7 @@ function renderHistory() {
           ${checks ? `<div class="sc-checks">${checks}</div>` : ''}
           <div class="sc-actions">
             <button class="btn-sm" onclick="loadSession(${s.id})">Load to Form</button>
+            <button class="btn-sm" onclick="copySessionForWhoop(${s.id})">Copy for WHOOP</button>
             <button class="btn-sm danger" onclick="deleteSession(${s.id})">Delete</button>
           </div>
         </div>
@@ -1974,18 +1975,13 @@ function closeModal() { document.getElementById('modal-bg').classList.remove('op
 document.getElementById('modal-bg').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 
 // ── COPY FOR WHOOP ──
-function copyForWhoop() {
-  const date    = document.getElementById('f-date').value;
-  const week    = document.getElementById('f-week').value;
-  const type    = document.getElementById('f-type').value;
-  const bw      = document.getElementById('f-bw').value;
-  const exs     = getExercises();
-
+function formatWhoopText(session) {
   const typeLabel = { lower: 'Lower', push: 'Push', pull: 'Pull', meta: 'Metabolic + Core', other: 'Other' };
   const lines = [];
+  const exs = session.exercises || [];
 
-  lines.push(`${week ? week + ' · ' : ''}${typeLabel[type] || type}${date ? ' · ' + date : ''}`);
-  if (bw) lines.push(`BW: ${bw} kg`);
+  lines.push(`${session.week ? session.week + ' · ' : ''}${typeLabel[session.type] || session.type}${session.date ? ' · ' + session.date : ''}`);
+  if (session.bodyweight) lines.push(`BW: ${session.bodyweight} kg`);
   lines.push('');
 
   if (exs.length) {
@@ -1999,8 +1995,10 @@ function copyForWhoop() {
     lines.push('');
   }
 
-  const text = lines.join('\n').trim();
+  return lines.join('\n').trim();
+}
 
+function copyTextForWhoop(text) {
   if (!text) { toast('Nothing to copy yet', true); return; }
 
   navigator.clipboard.writeText(text).then(() => {
@@ -2016,6 +2014,22 @@ function copyForWhoop() {
     document.body.removeChild(ta);
     toast('Copied. Paste into WHOOP journal');
   });
+}
+
+function copyForWhoop() {
+  copyTextForWhoop(formatWhoopText({
+    date: document.getElementById('f-date').value,
+    week: document.getElementById('f-week').value,
+    type: document.getElementById('f-type').value,
+    bodyweight: document.getElementById('f-bw').value,
+    exercises: getExercises()
+  }));
+}
+
+function copySessionForWhoop(id) {
+  const session = getData().find(s => s.id === id);
+  if (!session) { toast('Session not found', true); return; }
+  copyTextForWhoop(formatWhoopText(session));
 }
 
 // ── CLOUD SYNC (JSONBin.io) ──
