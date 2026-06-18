@@ -1,0 +1,392 @@
+{
+  "version": 2,
+  "exported": "2026-06-18T09:06:30.526Z",
+  "sessions": [
+    {
+      "id": 1781407669174,
+      "date": "2026-06-14",
+      "week": "W24",
+      "type": "push",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Barbell ncline / Machine Bench Press",
+          "weight": "50",
+          "volume": "10 x 3"
+        },
+        {
+          "name": "Barbell Back-off Bench (optional)",
+          "weight": "30",
+          "volume": "10 x 2"
+        },
+        {
+          "name": "DB Shoulder Press",
+          "weight": "30lb",
+          "volume": "10 x 3"
+        },
+        {
+          "name": "Lateral Raise",
+          "weight": "20",
+          "volume": "12 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1781320226546,
+      "date": "2026-06-13",
+      "week": "W24",
+      "type": "push",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Lat Pulldown (Narrow)",
+          "weight": "40",
+          "volume": "8 x 4"
+        },
+        {
+          "name": "Seated Row",
+          "weight": "40",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "Face Pulls",
+          "weight": "32",
+          "volume": "15 x 3"
+        },
+        {
+          "name": "Rear Delt Fly",
+          "weight": "27",
+          "volume": "12 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1780713952705,
+      "date": "2026-06-06",
+      "week": "W23",
+      "type": "push",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Lat Pulldown close grip",
+          "weight": "40",
+          "volume": "8 x 2"
+        },
+        {
+          "name": "Seated Row",
+          "weight": "40",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "Rear Delt",
+          "weight": "27",
+          "volume": "15 x 3"
+        },
+        {
+          "name": "Pulldown wide grio",
+          "weight": "40",
+          "volume": "8 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1780460601312,
+      "date": "2026-06-03",
+      "week": "W23",
+      "type": "lower",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Leg Press (S2)",
+          "weight": "136",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "RDL (DB)",
+          "weight": "55lb",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "Calf Raise (Machine)",
+          "weight": "54",
+          "volume": "15 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1780198756467,
+      "date": "2026-05-31",
+      "week": "W22",
+      "type": "push",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Lat Pulldown (Narrow)",
+          "weight": "40",
+          "volume": "10 x 3"
+        },
+        {
+          "name": "Seated Row",
+          "weight": "40",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "Face Pulls",
+          "weight": "27",
+          "volume": "10 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1779757931570,
+      "date": "2026-05-26",
+      "week": "W22",
+      "type": "push",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Incline / Machine Bench Press",
+          "weight": "70",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "Back-off Bench (optional)",
+          "weight": "50",
+          "volume": "10 x 2"
+        },
+        {
+          "name": "Shoulder Press",
+          "weight": "30",
+          "volume": "12 x 3"
+        },
+        {
+          "name": "Lateral Raise",
+          "weight": "10",
+          "volume": "12 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1779675073275,
+      "date": "2026-05-25",
+      "week": "W22",
+      "type": "lower",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Leg Press (S2)",
+          "weight": "136",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "RDL (DB)",
+          "weight": "55lb",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "Calf Raise (Machine)",
+          "weight": "54",
+          "volume": "15 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1775972293507,
+      "date": "2026-04-12",
+      "week": "W15",
+      "type": "lower",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Calf Raise (Machine)",
+          "weight": "54",
+          "volume": "20 x 3"
+        },
+        {
+          "name": "Incline BP Machine (S5)",
+          "weight": "70",
+          "volume": "10 x 3"
+        },
+        {
+          "name": "Leg Press (S2)",
+          "weight": "136",
+          "volume": "12 x 3"
+        },
+        {
+          "name": "RDL (DB)",
+          "weight": "55lb",
+          "volume": "12 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1775365748446,
+      "date": "2026-04-05",
+      "week": "W14",
+      "type": "pull",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Lat Pulldown (Neutral)",
+          "weight": "40",
+          "volume": "12 x 3"
+        },
+        {
+          "name": "Seated Row (S4)",
+          "weight": "45",
+          "volume": "10 x 3"
+        },
+        {
+          "name": "Face Pull / Rear Delt",
+          "weight": "23",
+          "volume": "12 x 3"
+        },
+        {
+          "name": "Rear Delt Fly (S6)",
+          "weight": "23",
+          "volume": "12 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1775280638109,
+      "date": "2026-04-04",
+      "week": "W14",
+      "type": "lower",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Calf Raise (Machine)",
+          "weight": "40",
+          "volume": "15 x 3"
+        },
+        {
+          "name": "Incline BP Machine (S5)",
+          "weight": "70",
+          "volume": "10 x 3"
+        },
+        {
+          "name": "Leg Press (S2)",
+          "weight": "136",
+          "volume": "12 x 3"
+        },
+        {
+          "name": "RDL (DB)",
+          "weight": "60lb",
+          "volume": "10 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1774935020178,
+      "date": "2026-03-31",
+      "week": "W14",
+      "type": "lower",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Calf Raise (Machine)",
+          "weight": "54",
+          "volume": "20 x 3"
+        },
+        {
+          "name": "Incline BP Machine (S5)",
+          "weight": "70",
+          "volume": "10 x 3"
+        },
+        {
+          "name": "Leg Press (S2)",
+          "weight": "136",
+          "volume": "12 x 3"
+        },
+        {
+          "name": "RDL (DB)",
+          "weight": "55lb",
+          "volume": "12 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1774800153388,
+      "date": "2026-03-30",
+      "week": "W14",
+      "type": "push",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Chest Press (S5)",
+          "weight": "90",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "Lateral Raise",
+          "weight": "20lb",
+          "volume": "15 x 3"
+        },
+        {
+          "name": "Shoulder Press (S5)",
+          "weight": "54",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "Machine Chest Fly (S4)",
+          "weight": "66",
+          "volume": "8 x 1"
+        }
+      ]
+    },
+    {
+      "id": 1774794863476,
+      "date": "2026-03-29",
+      "week": "W13",
+      "type": "lower",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Calf Raise (Machine)",
+          "weight": "20",
+          "volume": "20 x 3"
+        },
+        {
+          "name": "DB BP",
+          "weight": "20",
+          "volume": "10 x 3"
+        },
+        {
+          "name": "RDL (DB)",
+          "weight": "25",
+          "volume": "10 x 3"
+        }
+      ]
+    },
+    {
+      "id": 1774794923132,
+      "date": "2026-03-28",
+      "week": "W13",
+      "type": "push",
+      "bodyweight": "",
+      "exercises": [
+        {
+          "name": "Chest Press (S5)",
+          "weight": "90",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "Lateral Raise",
+          "weight": "20lb",
+          "volume": "15 x 3"
+        },
+        {
+          "name": "Shoulder Press (S5)",
+          "weight": "54",
+          "volume": "8 x 3"
+        },
+        {
+          "name": "Machine Chest Fly (S4)",
+          "weight": "66",
+          "volume": "8 x 1"
+        }
+      ]
+    }
+  ]
+}

@@ -3,20 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Workout Log 2026 — v5</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<title>Workout Log 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink: #1c1b18;
-  --paper: #f0ebe0;
-  --paper2: #e4dccb;
-  --paper3: #d8cdb8;
-  --red: #b83228;
-  --green: #2a6049;
-  --blue: #2255a4;
-  --muted: #7d7360;
-  --border: #c2b89e;
-  --white: #faf8f3;
+  --ink: #172033;
+  --paper: #f7f9fc;
+  --paper2: #f3f7fb;
+  --paper3: #edf3f9;
+  --red: #ff3b30;
+  --green: #60758d;
+  --blue: #3b82f6;
+  --muted: #7d8ca0;
+  --border: #dfe7f2;
+  --border-strong: #c8d4e3;
+  --white: #fff;
+  --ui-line: #e6edf5;
+  --ui-active: #60758d;
+  --entry-h: 52px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -24,7 +28,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: 'Space Mono', monospace;
+  font-family: 'IBM Plex Sans Thai', 'Inter', sans-serif;
   font-size: 12px;
   line-height: 1.55;
   min-height: 100vh;
@@ -32,8 +36,8 @@ body {
 
 /* ── HEADER ── */
 header {
-  background: var(--ink);
-  color: var(--paper);
+  background: rgba(255,255,255,.96);
+  color: var(--ink);
   padding: 0 28px;
   display: flex;
   align-items: center;
@@ -42,56 +46,61 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 3px solid var(--red);
+  border-bottom: 1px solid var(--ui-line);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
 }
 header h1 {
-  font-family: 'DM Serif Display', serif;
-  font-style: italic;
-  font-size: 24px;
-  color: var(--paper);
-  letter-spacing: -0.3px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0;
   white-space: nowrap;
 }
-.header-divider { width: 1px; height: 20px; background: #444; }
+.header-divider { width: 1px; height: 20px; background: var(--ui-line); }
 .header-stats { display: flex; gap: 16px; align-items: center; }
 .stat-chip {
   font-size: 10px;
-  letter-spacing: 1.5px;
+  letter-spacing: .08em;
   text-transform: uppercase;
-  color: #aaa;
+  color: var(--muted);
 }
-.stat-chip span { color: var(--paper); font-weight: 700; }
+.stat-chip span { color: var(--ink); font-weight: 600; }
 .header-actions { margin-left: auto; display: flex; gap: 6px; }
 .btn-hdr {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 1.5px;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .04em;
   text-transform: uppercase;
-  padding: 5px 10px;
+  padding: 6px 10px;
   cursor: pointer;
-  border-radius: 2px;
-  border: 1px solid #555;
-  background: none;
-  color: #bbb;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--muted);
   transition: all 0.1s;
 }
-.btn-hdr:hover { border-color: var(--paper); color: var(--paper); }
+.btn-hdr:hover { background: var(--paper3); border-color: var(--border-strong); color: var(--ink); }
 .btn-hdr.primary { background: var(--red); border-color: var(--red); color: white; }
 .btn-hdr.primary:hover { background: #9c2820; }
 
 /* ── TABS ── */
 .tabs {
-  background: var(--paper2);
-  border-bottom: 1px solid var(--border);
+  background: var(--white);
+  border-bottom: 1px solid var(--ui-line);
   padding: 0 24px;
   display: flex;
   gap: 0;
   overflow-x: auto;
 }
 .tab {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 10px;
-  letter-spacing: 2px;
+  font-weight: 600;
+  letter-spacing: .1em;
   text-transform: uppercase;
   padding: 10px 16px;
   cursor: pointer;
@@ -107,28 +116,35 @@ header h1 {
 .tab.active { color: var(--ink); border-bottom-color: var(--red); font-weight: 700; }
 
 /* ── MAIN ── */
-.main { padding: 24px; max-width: 900px; margin: 0 auto; }
+.main { padding: 24px 38px 50px; max-width: 1160px; margin: 0 auto; }
 
 /* ── LOG SESSION VIEW ── */
-.log-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.log-layout { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.log-layout > div:first-child {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.log-layout > div:first-child > .card { margin-bottom: 0 !important; }
 
 .card {
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 6px;
   overflow: hidden;
 }
 .card-header {
   background: var(--paper2);
   border-bottom: 1px solid var(--border);
-  padding: 10px 16px;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 .card-title {
-  font-size: 9px;
-  letter-spacing: 3px;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: .35em;
   text-transform: uppercase;
   color: var(--muted);
   font-weight: 700;
@@ -164,7 +180,7 @@ header h1 {
   background: var(--paper);
   border: 1px solid var(--border);
   color: var(--ink);
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif;
   font-size: 12px;
   padding: 6px 10px;
   outline: none;
@@ -181,61 +197,80 @@ header h1 {
 .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
 
 /* EXERCISE TABLE */
-.ex-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+.ex-table { width: 100%; border-collapse: separate; border-spacing: 8px 10px; margin: 0 -8px 12px; }
 .ex-table th {
-  font-size: 8px;
-  letter-spacing: 2px;
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .32em;
   text-transform: uppercase;
   color: var(--muted);
   text-align: left;
-  padding: 0 4px 5px;
+  padding: 0 8px 8px;
   border-bottom: 1px solid var(--border);
 }
-.ex-table th:nth-child(2), .ex-table th:nth-child(3), .ex-table th:nth-child(4) { text-align: center; width: 64px; }
-.ex-table th:nth-child(5) { width: 28px; }
-.ex-table td { padding: 3px 4px; vertical-align: middle; }
-.ex-table input {
+.ex-table th:nth-child(2) { text-align: center; width: 112px; }
+.ex-table th:nth-child(3) { text-align: center; width: 164px; }
+.ex-table th:nth-child(4) { width: 48px; }
+.ex-table td { padding: 0; vertical-align: top; }
+.ex-table input,
+.ex-table textarea {
   background: var(--paper);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   color: var(--ink);
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  padding: 4px 6px;
+  font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.25;
+  padding: 10px 12px;
   outline: none;
-  border-radius: 2px;
+  border-radius: 4px;
   width: 100%;
   text-align: center;
+  height: var(--entry-h);
+  min-height: var(--entry-h);
 }
-.ex-table input:first-child { text-align: left; }
-.ex-table input:focus { border-color: var(--ink); }
+.ex-table textarea {
+  resize: none;
+  overflow: hidden;
+  text-align: left;
+}
+.ex-table input:first-child,
+.ex-table textarea:first-child { text-align: left; }
+.ex-table input:focus,
+.ex-table textarea:focus {
+  border-color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
 .ex-row-anim { animation: fadeSlide 0.15s ease; }
 @keyframes fadeSlide { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
 
 .btn-add-ex {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 2px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .35em;
   text-transform: uppercase;
   color: var(--green);
   background: none;
   border: 1px dashed var(--green);
-  padding: 5px 10px;
+  padding: 13px 10px;
   width: 100%;
   cursor: pointer;
   border-radius: 2px;
-  margin-bottom: 12px;
+  margin: 14px 0 12px;
   transition: background 0.1s;
 }
 .btn-add-ex:hover { background: #eef7f2; }
 
 .btn-del-ex {
-  font-family: 'Space Mono', monospace;
-  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
   line-height: 1;
-  width: 24px;
-  height: 26px;
-  background: none;
-  border: 1px solid var(--border);
+  width: 48px;
+  height: var(--entry-h);
+  background: var(--paper);
+  border: 1px solid var(--border-strong);
   color: var(--muted);
   cursor: pointer;
   border-radius: 2px;
@@ -249,7 +284,7 @@ header h1 {
 
 /* SUBMIT BTN */
 .btn-log {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 10px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -267,7 +302,7 @@ header h1 {
 .btn-log:active { transform: translate(1px, 1px); }
 
 .btn-clear {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 9px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -292,7 +327,7 @@ header h1 {
 }
 .history-toolbar .filter-group { display: flex; gap: 5px; flex-wrap: wrap; }
 .ftag {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 9px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -306,7 +341,7 @@ header h1 {
 }
 .ftag:hover, .ftag.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .history-toolbar input[type=search] {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 11px;
   padding: 5px 10px;
   border: 1px solid var(--border);
@@ -329,8 +364,8 @@ header h1 {
 }
 .session-card:hover { box-shadow: 3px 3px 0 var(--border); }
 .session-card[data-type="lower"] { border-left-color: #3b82f6; }
-.session-card[data-type="push"]  { border-left-color: #ec4899; }
-.session-card[data-type="pull"]  { border-left-color: #10b981; }
+.session-card[data-type="push"]  { border-left-color: #059669; }
+.session-card[data-type="pull"]  { border-left-color: #8b5cf6; }
 .session-card[data-type="meta"]  { border-left-color: #f59e0b; }
 
 .sc-header {
@@ -348,21 +383,21 @@ header h1 {
 .sc-date { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
 .sc-type { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
 .sc-preview { font-size: 10px; color: var(--muted); margin-left: auto; max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sc-toggle { color: var(--muted); font-size: 11px; margin-left: 8px; transition: transform 0.2s; }
-.sc-toggle.open { transform: rotate(90deg); }
+.sc-toggle { color: var(--muted); font-size: 10px; margin-left: 8px; letter-spacing:.08em; text-transform:uppercase; }
+.sc-toggle.open { color: var(--ink); }
 
 .sc-body { padding: 14px; display: none; }
 .sc-body.open { display: block; }
 .sc-body table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
 .sc-body th { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0 6px 4px; border-bottom: 1px solid var(--border); }
 .sc-body td { font-size: 11px; padding: 4px 6px; border-bottom: 1px solid #f0ece3; }
-.sc-body td:nth-child(2), .sc-body td:nth-child(3), .sc-body td:nth-child(4) { text-align: center; color: var(--muted); }
-.sc-note { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 6px; }
+.sc-body td:nth-child(2), .sc-body td:nth-child(3) { text-align: center; color: var(--muted); }
+.sc-ex-name { font-weight: 700; color: var(--ink); letter-spacing: 0.1px; }
 .sc-checks { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
 .sc-check { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; background: #e8f5ee; color: var(--green); }
 .sc-actions { display: flex; gap: 6px; margin-top: 10px; }
 .btn-sm {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 8px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -378,11 +413,11 @@ header h1 {
 .btn-sm.danger:hover { background: #fef2f2; color: var(--red); border-color: var(--red); }
 
 /* ── TEMPLATES VIEW ── */
-.template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
 .tmpl-card {
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 6px;
   overflow: hidden;
   cursor: pointer;
   transition: box-shadow 0.15s, transform 0.1s;
@@ -396,14 +431,23 @@ header h1 {
   background: var(--paper2);
   border-bottom: 1px solid var(--border);
 }
-.tmpl-icon { font-size: 18px; }
-.tmpl-name { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
-.tmpl-tag { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.tmpl-name { font-family:'Inter',sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0; }
+.tmpl-tag { font-family:'Inter',sans-serif; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 .tmpl-body { padding: 12px 14px; }
-.tmpl-ex { font-size: 10px; color: var(--muted); padding: 2px 0; border-bottom: 1px dotted var(--border); }
+.tmpl-ex { font-size: 10px; color: var(--muted); padding: 5px 0; border-bottom: 1px dotted var(--border); }
+.tmpl-ex-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.35;
+}
+.tmpl-ex-meta { color: var(--muted); margin-top: 2px; }
 .tmpl-ex:last-child { border: none; }
 .tmpl-use-btn {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 9px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -439,7 +483,7 @@ header h1 {
   gap: 8px;
 }
 .tmpl-edit-header input {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif;
   font-size: 11px;
   font-weight: 700;
   background: transparent;
@@ -451,7 +495,7 @@ header h1 {
 }
 .tmpl-edit-header input:focus { background: var(--paper); border-radius: 2px; padding: 2px 6px; }
 .tmpl-edit-header select {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 9px;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -464,7 +508,7 @@ header h1 {
   cursor: pointer;
 }
 .tmpl-edit-header .btn-del-tmpl {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 11px;
   background: none;
   border: 1px solid var(--border);
@@ -478,53 +522,116 @@ header h1 {
 }
 .tmpl-edit-header .btn-del-tmpl:hover { color: var(--red); border-color: var(--red); background: #fef2f2; }
 .tmpl-edit-body { padding: 10px 12px; }
-.tmpl-edit-cardio {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  width: 100%;
-  background: var(--paper);
-  border: 1px solid var(--border);
-  color: var(--ink);
-  padding: 5px 8px;
-  border-radius: 2px;
-  outline: none;
-  margin-bottom: 8px;
-}
-.tmpl-edit-cardio:focus { border-color: var(--ink); }
 .tmpl-ex-edit-row {
   display: grid;
-  grid-template-columns: 1fr 64px 56px 52px 24px;
-  gap: 4px;
-  margin-bottom: 4px;
+  grid-template-columns: 1fr 112px 164px 48px;
+  gap: 8px;
+  margin-bottom: 10px;
   animation: fadeSlide 0.12s ease;
+  align-items: stretch;
 }
-.tmpl-ex-edit-row input {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
+.tmpl-ex-edit-row input,
+.tmpl-ex-edit-row textarea {
+  font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 16px;
   background: var(--paper);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   color: var(--ink);
-  padding: 4px 6px;
-  border-radius: 2px;
+  padding: 9px 12px;
+  border-radius: 4px;
   outline: none;
   width: 100%;
   text-align: center;
+  height: var(--entry-h);
+  min-height: var(--entry-h);
+  line-height: 1.25;
 }
-.tmpl-ex-edit-row input:first-child { text-align: left; }
-.tmpl-ex-edit-row input:focus { border-color: var(--ink); }
+.tmpl-ex-edit-row textarea {
+  resize: none;
+  overflow: hidden;
+  text-align: left;
+}
+.tmpl-ex-edit-row input:focus,
+.tmpl-ex-edit-row textarea:focus { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.stat-list { display: grid; gap: 10px; }
+.stat-toolbar { margin-bottom: 14px; }
+.stat-search {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  background: var(--paper2);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  border-radius: 5px;
+  padding: 9px 11px;
+  outline: none;
+  width: 100%;
+}
+.stat-search:focus {
+  background: var(--paper3);
+  border-color: var(--border-strong);
+}
+.stat-search::placeholder { color: var(--muted); }
+.stat-row {
+  display: grid;
+  grid-template-columns: 1fr 112px 164px 48px;
+  gap: 8px;
+  align-items: stretch;
+}
+.stat-row input,
+.stat-row textarea {
+  font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  background: var(--paper);
+  border: 1px solid var(--border-strong);
+  color: var(--ink);
+  padding: 9px 12px;
+  border-radius: 4px;
+  outline: none;
+  width: 100%;
+  height: var(--entry-h);
+  min-height: var(--entry-h);
+  line-height: 1.25;
+  text-align: center;
+}
+.stat-row textarea {
+  resize: none;
+  overflow: hidden;
+  text-align: left;
+}
+.stat-row input:focus,
+.stat-row textarea:focus { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.stat-head {
+  display: grid;
+  grid-template-columns: 1fr 112px 164px 48px;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.stat-head span {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 8px 7px;
+  border-bottom: 1px solid var(--border);
+}
+.stat-head span:nth-child(2),
+.stat-head span:nth-child(3) { text-align: center; }
 .btn-add-tmpl-ex {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight:700; letter-spacing: .28em; text-transform: uppercase;
   color: var(--green); background: none;
   border: 1px dashed var(--green);
-  padding: 4px 8px; width: 100%;
-  cursor: pointer; border-radius: 2px; margin-top: 4px;
+  padding: 11px 8px; width: 100%;
+  cursor: pointer; border-radius: 2px; margin-top: 14px;
   transition: background 0.1s;
 }
 .btn-add-tmpl-ex:hover { background: #eef7f2; }
 .tmpl-editor-actions { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
 .btn-add-tmpl {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
   background: var(--paper); color: var(--ink);
   border: 1px solid var(--border);
@@ -533,7 +640,7 @@ header h1 {
 }
 .btn-add-tmpl:hover { background: var(--paper2); border-color: var(--ink); }
 .btn-save-tmpls {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
   background: var(--ink); color: var(--paper);
   border: 2px solid var(--ink);
@@ -548,7 +655,6 @@ header h1 {
   padding: 60px 20px;
   color: var(--muted);
 }
-.empty-state .big { font-size: 40px; margin-bottom: 12px; }
 .empty-state p { font-size: 11px; letter-spacing: 1px; }
 
 /* ── TOAST ── */
@@ -590,7 +696,7 @@ header h1 {
   width: 90%;
   box-shadow: 8px 8px 0 rgba(0,0,0,0.15);
 }
-.modal h3 { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 8px; }
+.modal h3 { font-family: 'Inter', sans-serif; font-size: 18px; font-weight:600; margin-bottom: 8px; }
 .modal p { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
 
@@ -602,10 +708,44 @@ header h1 {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 700px) {
-  .log-layout { grid-template-columns: 1fr; }
-  .main { padding: 14px; }
-  header { padding: 0 16px; }
+  :root { --entry-h: 46px; }
+  .log-layout,
+  .log-layout > div:first-child { grid-template-columns: 1fr; }
+  .main { padding: 12px 10px 36px; }
+  header { padding: 0 12px; gap: 10px; }
+  header h1 { font-size: 16px; }
   .header-stats { display: none; }
+  .header-actions { gap: 4px; }
+  .btn-hdr { font-size: 9px; padding: 5px 7px; }
+  .tabs { padding: 0 10px; }
+  .tab { padding: 9px 10px; font-size: 9px; letter-spacing: .08em; }
+  .card-header { padding: 11px 12px; }
+  .card-title { font-size: 9px; letter-spacing: .28em; }
+  .card-body { padding: 12px; }
+  .row2 { grid-template-columns: 1fr; }
+  .ex-table { border-spacing: 5px 8px; margin: 0 -5px 12px; }
+  .ex-table th { letter-spacing: .14em; font-size: 8px; padding: 0 4px 6px; }
+  .ex-table th:nth-child(2) { width: 62px; }
+  .ex-table th:nth-child(3) { width: 86px; }
+  .ex-table th:nth-child(4) { width: 34px; }
+  .ex-table input,
+  .ex-table textarea {
+    font-size: 13px;
+    line-height: 1.25;
+    padding: 7px 8px;
+  }
+  .btn-del-ex { width: 34px; height: 46px; font-size: 14px; }
+  .btn-add-ex { font-size: 10px; letter-spacing: .24em; padding: 11px 8px; }
+  .tmpl-ex-edit-row { grid-template-columns: 1fr 74px 104px 40px; gap:5px; }
+  .tmpl-ex-edit-row input,
+  .tmpl-ex-edit-row textarea { font-size: 14px; padding: 8px; }
+  .stat-row,
+  .stat-head { grid-template-columns: 1fr 62px 86px 34px; gap: 5px; }
+  .stat-row input,
+  .stat-row textarea { font-size: 13px; padding: 7px 8px; }
+  .stat-head span { font-size: 8px; letter-spacing: .12em; padding: 0 4px 6px; }
+  .stat-toolbar { margin-bottom: 10px; }
+  .stat-search { font-size: 12px; padding: 8px 10px; }
 }
 </style>
 </head>
@@ -613,7 +753,6 @@ header h1 {
 
 <header>
   <h1>Workout Log</h1>
-  <span style="font-size:9px;letter-spacing:2px;color:#888;text-transform:uppercase;background:#2a2a27;padding:2px 7px;border-radius:2px">v5</span>
   <div class="header-divider"></div>
   <div class="header-stats">
     <div class="stat-chip">Sessions: <span id="hdr-count">0</span></div>
@@ -621,18 +760,19 @@ header h1 {
     <div class="stat-chip">Streak: <span id="hdr-streak">0</span>d</div>
   </div>
   <div class="header-actions">
-    <button class="btn-hdr" id="sync-btn" onclick="openSyncModal()">☁ Sync</button>
-    <button class="btn-hdr" onclick="exportData()">↓ Export</button>
+    <button class="btn-hdr" id="sync-btn" onclick="openSyncModal()">Sync</button>
+    <button class="btn-hdr" onclick="exportData()">Export</button>
     <label class="btn-hdr" style="cursor:pointer" title="Import JSON backup">
-      ↑ Import <input type="file" accept=".json" style="display:none" onchange="importData(event)">
+      Import <input type="file" accept=".json" style="display:none" onchange="importData(event)">
     </label>
   </div>
 </header>
 
 <div class="tabs">
-  <button class="tab active" onclick="showTab('log')">▶ Log Session</button>
-  <button class="tab" onclick="showTab('history')">≡ History</button>
-  <button class="tab" onclick="showTab('templates')">◈ Templates</button>
+  <button class="tab active" onclick="showTab('log')">Log Session</button>
+  <button class="tab" onclick="showTab('history')">History</button>
+  <button class="tab" onclick="showTab('stats')">Stats</button>
+  <button class="tab" onclick="showTab('templates')">Templates</button>
 </div>
 
 <!-- ═══ LOG TAB ═══ -->
@@ -652,17 +792,17 @@ header h1 {
             </div>
             <div class="field">
               <label>Week #</label>
-              <input type="text" id="f-week" placeholder="W11">
+              <input type="text" id="f-week" placeholder="W1">
             </div>
           </div>
           <div class="row2">
             <div class="field">
-              <label>Day Type</label>
+              <label>Workout Type</label>
               <select id="f-type">
-                <option value="lower">🟦 Lower</option>
-                <option value="push">🟦 Push</option>
-                <option value="pull">🟦 Pull</option>
-                <option value="meta">🟦 Metabolic + Core</option>
+                <option value="lower">Lower</option>
+                <option value="push">Push</option>
+                <option value="pull">Pull</option>
+                <option value="meta">Metabolic + Core</option>
                 <option value="other">Other</option>
               </select>
             </div>
@@ -671,24 +811,17 @@ header h1 {
               <input type="number" id="f-bw" placeholder="—" step="0.1">
             </div>
           </div>
-          <div class="field">
-            <label>Cardio</label>
-            <input type="text" id="f-cardio" placeholder="e.g. Incline Walk 30min Zone 2">
-          </div>
         </div>
       </div>
 
-      <!-- Note + Save -->
+      <!-- Save -->
       <div class="card">
         <div class="card-header">
-          <span class="card-title">Note</span>
+          <span class="card-title">Save</span>
         </div>
         <div class="card-body">
-          <div class="field">
-            <textarea id="f-note" placeholder="สั้น ๆ ก็ได้..." style="min-height:72px"></textarea>
-          </div>
-          <button class="btn-log" onclick="saveSession()">✦ Save Session</button>
-          <button class="btn-log" style="background:none;color:var(--ink);border:2px solid var(--ink);margin-bottom:6px" onclick="copyForWhoop()">⎘ Copy for WHOOP</button>
+          <button class="btn-log" onclick="saveSession()">Save Session</button>
+          <button class="btn-log" style="background:none;color:var(--ink);border:2px solid var(--ink);margin-bottom:6px" onclick="copyForWhoop()">Copy for WHOOP</button>
           <button class="btn-clear" onclick="clearForm()">Clear Form</button>
         </div>
       </div>
@@ -706,8 +839,7 @@ header h1 {
             <tr>
               <th>Exercise</th>
               <th>Weight</th>
-              <th>Reps</th>
-              <th>Sets</th>
+              <th>Reps x Sets</th>
               <th></th>
             </tr>
           </thead>
@@ -735,6 +867,29 @@ header h1 {
   <div class="sessions-list" id="sessions-list"></div>
 </div>
 
+<!-- ═══ STATS TAB ═══ -->
+<div id="tab-stats" class="main" style="display:none">
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Exercise Stats</span>
+    </div>
+    <div class="card-body">
+      <div class="stat-toolbar">
+        <input class="stat-search" id="stat-search" type="search" placeholder="Search exercise, weight, reps..." oninput="renderStats()">
+      </div>
+      <div class="stat-head">
+        <span>Exercise</span>
+        <span>Weight</span>
+        <span>Reps x Sets</span>
+        <span></span>
+      </div>
+      <div class="stat-list" id="stat-list"></div>
+      <button class="btn-add-ex" onclick="addStatRow()">+ Add Exercise Stat</button>
+      <button class="btn-log" onclick="saveStats()">Save Stats</button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ TEMPLATES TAB ═══ -->
 <div id="tab-templates" class="main" style="display:none">
   <p style="font-size:11px;color:var(--muted);margin-bottom:16px;letter-spacing:0.5px">Click a template to pre-fill the log form.</p>
@@ -746,7 +901,7 @@ header h1 {
     <div id="tmpl-editor-list"></div>
     <div class="tmpl-editor-actions">
       <button class="btn-add-tmpl" onclick="addNewTemplate()">+ New Template</button>
-      <button class="btn-save-tmpls" onclick="saveTemplates()">✦ Save Changes</button>
+      <button class="btn-save-tmpls" onclick="saveTemplates()">Save Changes</button>
     </div>
   </div>
 </div>
@@ -754,9 +909,9 @@ header h1 {
 <!-- SYNC MODAL -->
 <div class="modal-bg" id="sync-modal-bg">
   <div class="modal" style="max-width:480px">
-    <h3>☁ Cloud Sync</h3>
+    <h3>Cloud Sync</h3>
     <p style="margin-bottom:12px">Sync workouts across all devices using <strong>JSONBin.io</strong> (free).<br>
-    <a href="https://jsonbin.io" target="_blank" style="color:var(--green);font-size:10px;letter-spacing:1px">Get free API key at jsonbin.io →</a></p>
+    <a href="https://jsonbin.io" target="_blank" style="color:var(--green);font-size:10px;letter-spacing:1px">Get free API key at jsonbin.io</a></p>
 
     <div class="field">
       <label>API Key (X-Master-Key)</label>
@@ -771,8 +926,8 @@ header h1 {
 
     <div class="modal-actions" style="flex-wrap:wrap;gap:6px">
       <button class="btn-sm" onclick="closeSyncModal()">Cancel</button>
-      <button class="btn-sm" onclick="syncPull()">↓ Pull from Cloud</button>
-      <button class="btn-sm" onclick="syncPush()">↑ Push to Cloud</button>
+      <button class="btn-sm" onclick="syncPull()">Pull from Cloud</button>
+      <button class="btn-sm" onclick="syncPush()">Push to Cloud</button>
       <button class="btn-sm danger" onclick="clearSyncConfig()">Disconnect</button>
       <button class="btn-sm" style="background:var(--ink);color:var(--paper);border-color:var(--ink);margin-left:auto" onclick="saveSyncConfig()">Save Config</button>
     </div>
@@ -796,17 +951,16 @@ header h1 {
 
 <script>
 const STORE = 'workoutLog_2026';
+const STORE_SEEDED = 'workoutLog_2026_seeded';
 let currentFilter = 'all';
 let modalCallback = null;
 
-// ── DEFAULT TEMPLATES (W11 program) ──
+// ── DEFAULT TEMPLATES ──
 const DEFAULT_TEMPLATES = [
   {
-    id: 'mon-heavy-legs',
-    name: 'Mon – Heavy Legs',
+    id: 'heavy-legs',
+    name: 'Heavy Legs',
     type: 'lower',
-    icon: '🦵',
-    cardio: '15–25 min | Zone 1, brief low Zone 2 | Easy walk or bike',
     exercises: [
       { name: 'Leg Press (S2)',           weight: '136', reps: '8',  sets: '3' },
       { name: 'RDL (DB)',                 weight: '55lb', reps: '8',  sets: '3' },
@@ -814,11 +968,9 @@ const DEFAULT_TEMPLATES = [
     ]
   },
   {
-    id: 'tue-chest-shoulders',
-    name: 'Tue – Chest + Shoulders',
+    id: 'chest-shoulders',
+    name: 'Chest + Shoulders',
     type: 'push',
-    icon: '💪',
-    cardio: '15–20 min | Zone 2, brief Zone 1 warm/cool | Easy Stairmaster, brisk walk, or light row',
     exercises: [
       { name: 'Incline / Machine Bench Press', weight: '70',  reps: '8',     sets: '3' },
       { name: 'Back-off Bench (optional)',      weight: '50',  reps: '10',    sets: '2' },
@@ -827,19 +979,9 @@ const DEFAULT_TEMPLATES = [
     ]
   },
   {
-    id: 'wed-recovery',
-    name: 'Wed – Recovery',
-    type: 'other',
-    icon: '🧘',
-    cardio: '25–30 min | Zone 1–low Zone 2 only | Easy walk or easy bike, no pushing',
-    exercises: []
-  },
-  {
-    id: 'thu-lighter-legs',
-    name: 'Thu – Lighter Legs',
+    id: 'lighter-legs',
+    name: 'Lighter Legs',
     type: 'lower',
-    icon: '🦿',
-    cardio: '10–15 min | Zone 1, maybe low Zone 2 | Short walk or light bike',
     exercises: [
       { name: 'Lunges / Split Squats',    weight: '',   reps: '8/leg', sets: '3' },
       { name: 'Hamstring RDL or Curl',    weight: '',   reps: '10',    sets: '3' },
@@ -847,107 +989,480 @@ const DEFAULT_TEMPLATES = [
     ]
   },
   {
-    id: 'fri-upper-light',
-    name: 'Fri – Light Upper / Movement',
+    id: 'light-upper-movement',
+    name: 'Light Upper / Movement',
     type: 'push',
-    icon: '🏃',
-    cardio: '20–25 min | Zone 2, some Zone 1 warm/cool | Stairmaster, rower, or brisk walk',
     exercises: [
       { name: 'Rows (easy pump)',   weight: '', reps: '12', sets: '3' },
       { name: 'Push-ups',          weight: 'BW', reps: '15', sets: '3' },
     ]
   },
   {
-    id: 'sat-back-shoulders',
-    name: 'Sat – Back + Shoulders',
+    id: 'back-shoulders',
+    name: 'Back + Shoulders',
     type: 'pull',
-    icon: '🏋️',
-    cardio: '5–10 min warm-up Zone 1–2 | If Recovery green: +10–15 min Zone 2 | Walk or Stairmaster',
     exercises: [
       { name: 'Lat Pulldown (Narrow)',  weight: '40', reps: '8–10', sets: '3' },
       { name: 'Seated Row',            weight: '40', reps: '8–10', sets: '3' },
       { name: 'Face Pulls / Rear Delt',weight: '27', reps: '15',   sets: '3' },
     ]
   },
+];
+
+const DEFAULT_STATS = [
+  { name: 'BB Bench Press', weight: '50kg', volume: '8 x 3' },
+  { name: 'Machine Incline BP', weight: '70kg', volume: '8 x 3' },
+];
+
+const DEFAULT_SESSIONS = [
   {
-    id: 'sun-rest',
-    name: 'Sun – Rest',
-    type: 'other',
-    icon: '😴',
-    cardio: '15–20 min | Zone 1 only | Very easy walk or easy bike',
-    exercises: []
-  },
-  // ── v1 / W11 (archived) ──
-  {
-    id: 'w11-lower',
-    name: 'W11 – Day 1 Lower',
-    type: 'lower',
-    icon: '📋',
-    cardio: 'Incline Walk / Bike 30min Zone 2',
-    exercises: [
-      { name: 'Calf Raise (Machine)',    weight: '54',   reps: '20', sets: '3' },
-      { name: 'Incline BP Machine (S5)',weight: '70',   reps: '10', sets: '3' },
-      { name: 'Leg Press (S2)',          weight: '136',  reps: '12', sets: '3' },
-      { name: 'RDL (DB)',                weight: '55lb', reps: '12', sets: '3' },
+    "id": 1781407669174,
+    "date": "2026-06-14",
+    "week": "W24",
+    "type": "push",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Barbell ncline / Machine Bench Press",
+        "weight": "50",
+        "volume": "10 x 3"
+      },
+      {
+        "name": "Barbell Back-off Bench (optional)",
+        "weight": "30",
+        "volume": "10 x 2"
+      },
+      {
+        "name": "DB Shoulder Press",
+        "weight": "30lb",
+        "volume": "10 x 3"
+      },
+      {
+        "name": "Lateral Raise",
+        "weight": "20",
+        "volume": "12 x 3"
+      }
     ]
   },
   {
-    id: 'w11-push',
-    name: 'W11 – Day 2 Push',
-    type: 'push',
-    icon: '📋',
-    cardio: 'Elliptical / Fast Walk 30min',
-    exercises: [
-      { name: 'Chest Press (S5)',        weight: '90',   reps: '8',  sets: '3' },
-      { name: 'Lateral Raise',           weight: '20lb', reps: '15', sets: '3' },
-      { name: 'Shoulder Press (S5)',     weight: '54',   reps: '8',  sets: '3' },
-      { name: 'Machine Chest Fly (S4)', weight: '66',   reps: '8',  sets: '1' },
+    "id": 1781320226546,
+    "date": "2026-06-13",
+    "week": "W24",
+    "type": "push",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Lat Pulldown (Narrow)",
+        "weight": "40",
+        "volume": "8 x 4"
+      },
+      {
+        "name": "Seated Row",
+        "weight": "40",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "Face Pulls",
+        "weight": "32",
+        "volume": "15 x 3"
+      },
+      {
+        "name": "Rear Delt Fly",
+        "weight": "27",
+        "volume": "12 x 3"
+      }
     ]
   },
   {
-    id: 'w11-pull',
-    name: 'W11 – Day 3 Pull',
-    type: 'pull',
-    icon: '📋',
-    cardio: 'Row / Bike Steady 30min',
-    exercises: [
-      { name: 'Lat Pulldown (Neutral)', weight: '40', reps: '12', sets: '3' },
-      { name: 'Seated Row (S4)',        weight: '45', reps: '10', sets: '3' },
-      { name: 'Face Pull / Rear Delt',  weight: '23', reps: '12', sets: '3' },
-      { name: 'Rear Delt Fly (S6)',     weight: '23', reps: '12', sets: '3' },
+    "id": 1780713952705,
+    "date": "2026-06-06",
+    "week": "W23",
+    "type": "push",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Lat Pulldown close grip",
+        "weight": "40",
+        "volume": "8 x 2"
+      },
+      {
+        "name": "Seated Row",
+        "weight": "40",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "Rear Delt",
+        "weight": "27",
+        "volume": "15 x 3"
+      },
+      {
+        "name": "Pulldown wide grio",
+        "weight": "40",
+        "volume": "8 x 3"
+      }
     ]
   },
   {
-    id: 'w11-meta',
-    name: 'W11 – Day 4 Metabolic',
-    type: 'meta',
-    icon: '📋',
-    cardio: 'Walk / Bike 30min (เบา ยาว)',
-    exercises: [
-      { name: 'Goblet Squat',           weight: '24',      reps: '12',  sets: '3' },
-      { name: 'Farmer Carry',           weight: '28/side', reps: '40s', sets: '3' },
-      { name: 'Lower Back Extension',   weight: '15',      reps: '12',  sets: '2' },
-      { name: 'Plank / Dead Bug',       weight: 'BW',      reps: '45s', sets: '3' },
+    "id": 1780460601312,
+    "date": "2026-06-03",
+    "week": "W23",
+    "type": "lower",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Leg Press (S2)",
+        "weight": "136",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "RDL (DB)",
+        "weight": "55lb",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "Calf Raise (Machine)",
+        "weight": "54",
+        "volume": "15 x 3"
+      }
     ]
   },
+  {
+    "id": 1780198756467,
+    "date": "2026-05-31",
+    "week": "W22",
+    "type": "push",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Lat Pulldown (Narrow)",
+        "weight": "40",
+        "volume": "10 x 3"
+      },
+      {
+        "name": "Seated Row",
+        "weight": "40",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "Face Pulls",
+        "weight": "27",
+        "volume": "10 x 3"
+      }
+    ]
+  },
+  {
+    "id": 1779757931570,
+    "date": "2026-05-26",
+    "week": "W22",
+    "type": "push",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Incline / Machine Bench Press",
+        "weight": "70",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "Back-off Bench (optional)",
+        "weight": "50",
+        "volume": "10 x 2"
+      },
+      {
+        "name": "Shoulder Press",
+        "weight": "30",
+        "volume": "12 x 3"
+      },
+      {
+        "name": "Lateral Raise",
+        "weight": "10",
+        "volume": "12 x 3"
+      }
+    ]
+  },
+  {
+    "id": 1779675073275,
+    "date": "2026-05-25",
+    "week": "W22",
+    "type": "lower",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Leg Press (S2)",
+        "weight": "136",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "RDL (DB)",
+        "weight": "55lb",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "Calf Raise (Machine)",
+        "weight": "54",
+        "volume": "15 x 3"
+      }
+    ]
+  },
+  {
+    "id": 1775972293507,
+    "date": "2026-04-12",
+    "week": "W15",
+    "type": "lower",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Calf Raise (Machine)",
+        "weight": "54",
+        "volume": "20 x 3"
+      },
+      {
+        "name": "Incline BP Machine (S5)",
+        "weight": "70",
+        "volume": "10 x 3"
+      },
+      {
+        "name": "Leg Press (S2)",
+        "weight": "136",
+        "volume": "12 x 3"
+      },
+      {
+        "name": "RDL (DB)",
+        "weight": "55lb",
+        "volume": "12 x 3"
+      }
+    ]
+  },
+  {
+    "id": 1775365748446,
+    "date": "2026-04-05",
+    "week": "W14",
+    "type": "pull",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Lat Pulldown (Neutral)",
+        "weight": "40",
+        "volume": "12 x 3"
+      },
+      {
+        "name": "Seated Row (S4)",
+        "weight": "45",
+        "volume": "10 x 3"
+      },
+      {
+        "name": "Face Pull / Rear Delt",
+        "weight": "23",
+        "volume": "12 x 3"
+      },
+      {
+        "name": "Rear Delt Fly (S6)",
+        "weight": "23",
+        "volume": "12 x 3"
+      }
+    ]
+  },
+  {
+    "id": 1775280638109,
+    "date": "2026-04-04",
+    "week": "W14",
+    "type": "lower",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Calf Raise (Machine)",
+        "weight": "40",
+        "volume": "15 x 3"
+      },
+      {
+        "name": "Incline BP Machine (S5)",
+        "weight": "70",
+        "volume": "10 x 3"
+      },
+      {
+        "name": "Leg Press (S2)",
+        "weight": "136",
+        "volume": "12 x 3"
+      },
+      {
+        "name": "RDL (DB)",
+        "weight": "60lb",
+        "volume": "10 x 3"
+      }
+    ]
+  },
+  {
+    "id": 1774935020178,
+    "date": "2026-03-31",
+    "week": "W14",
+    "type": "lower",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Calf Raise (Machine)",
+        "weight": "54",
+        "volume": "20 x 3"
+      },
+      {
+        "name": "Incline BP Machine (S5)",
+        "weight": "70",
+        "volume": "10 x 3"
+      },
+      {
+        "name": "Leg Press (S2)",
+        "weight": "136",
+        "volume": "12 x 3"
+      },
+      {
+        "name": "RDL (DB)",
+        "weight": "55lb",
+        "volume": "12 x 3"
+      }
+    ]
+  },
+  {
+    "id": 1774800153388,
+    "date": "2026-03-30",
+    "week": "W14",
+    "type": "push",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Chest Press (S5)",
+        "weight": "90",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "Lateral Raise",
+        "weight": "20lb",
+        "volume": "15 x 3"
+      },
+      {
+        "name": "Shoulder Press (S5)",
+        "weight": "54",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "Machine Chest Fly (S4)",
+        "weight": "66",
+        "volume": "8 x 1"
+      }
+    ]
+  },
+  {
+    "id": 1774794863476,
+    "date": "2026-03-29",
+    "week": "W13",
+    "type": "lower",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Calf Raise (Machine)",
+        "weight": "20",
+        "volume": "20 x 3"
+      },
+      {
+        "name": "DB BP",
+        "weight": "20",
+        "volume": "10 x 3"
+      },
+      {
+        "name": "RDL (DB)",
+        "weight": "25",
+        "volume": "10 x 3"
+      }
+    ]
+  },
+  {
+    "id": 1774794923132,
+    "date": "2026-03-28",
+    "week": "W13",
+    "type": "push",
+    "bodyweight": "",
+    "exercises": [
+      {
+        "name": "Chest Press (S5)",
+        "weight": "90",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "Lateral Raise",
+        "weight": "20lb",
+        "volume": "15 x 3"
+      },
+      {
+        "name": "Shoulder Press (S5)",
+        "weight": "54",
+        "volume": "8 x 3"
+      },
+      {
+        "name": "Machine Chest Fly (S4)",
+        "weight": "66",
+        "volume": "8 x 1"
+      }
+    ]
+  }
 ];
 
 // ── STORAGE ──
+function seedInitialData() {
+  if (localStorage.getItem(STORE_SEEDED)) return;
+  try {
+    const existing = JSON.parse(localStorage.getItem(STORE) || '[]');
+    if (Array.isArray(existing) && existing.length) return;
+  } catch {}
+  saveData(DEFAULT_SESSIONS);
+  localStorage.setItem(STORE_SEEDED, '1');
+}
+
+function normalizeType(type) {
+  const t = String(type || '').toLowerCase();
+  if (['lower','push','pull','meta','other'].includes(t)) return t;
+  if (t.includes('leg') || t.includes('lower')) return 'lower';
+  if (t.includes('chest') || t.includes('shoulder') || t.includes('push') || t.includes('bench')) return 'push';
+  if (t.includes('back') || t.includes('pull') || t.includes('row') || t.includes('lat')) return 'pull';
+  if (t.includes('meta') || t.includes('core') || t.includes('carry')) return 'meta';
+  return 'other';
+}
+
+function normalizeExercise(ex) {
+  return {
+    name: ex?.name || '',
+    weight: ex?.weight || '',
+    volume: ex?.volume || [ex?.reps, ex?.sets].filter(Boolean).join(' x ')
+  };
+}
+
+function normalizeSession(session) {
+  return {
+    id: session.id || Date.now(),
+    date: session.date || '',
+    week: session.week || '',
+    type: normalizeType(session.type),
+    bodyweight: session.bodyweight || '',
+    exercises: (session.exercises || []).map(normalizeExercise).filter(ex => ex.name)
+  };
+}
+
+function normalizeSessions(sessions) {
+  return sessions.map(normalizeSession).filter(s => s.date && s.exercises.length);
+}
+
 function getData() {
-  try { return JSON.parse(localStorage.getItem(STORE)) || []; }
+  try { return normalizeSessions(JSON.parse(localStorage.getItem(STORE)) || []); }
   catch { return []; }
 }
 function saveData(d) { localStorage.setItem(STORE, JSON.stringify(d)); }
 
 // ── TABS ──
 function showTab(t) {
-  ['log','history','templates'].forEach(id => {
+  ['log','history','stats','templates'].forEach(id => {
     document.getElementById('tab-' + id).style.display = id === t ? 'block' : 'none';
   });
   document.querySelectorAll('.tab').forEach((el, i) => {
-    el.classList.toggle('active', ['log','history','templates'][i] === t);
+    el.classList.toggle('active', ['log','history','stats','templates'][i] === t);
   });
   if (t === 'history') renderHistory();
+  if (t === 'stats') renderStats();
   if (t === 'templates') renderTemplates();
 }
 
@@ -979,15 +1494,19 @@ function updateDayBadge() {
   badge.className = 'day-badge ' + cls;
 }
 
+function exVolume(ex) {
+  if (ex?.volume) return ex.volume;
+  return [ex?.reps, ex?.sets].filter(Boolean).join(' x ');
+}
+
 function addExRow(ex) {
   const tbody = document.getElementById('ex-tbody');
   const tr = document.createElement('tr');
   tr.className = 'ex-row-anim';
   tr.innerHTML = `
-    <td><input type="text" placeholder="Exercise name" value="${ex?.name||''}" style="text-align:left;width:100%"></td>
+    <td><textarea rows="2" placeholder="Exercise name">${escHtml(ex?.name||'')}</textarea></td>
     <td><input type="text" placeholder="—" value="${ex?.weight||''}"></td>
-    <td><input type="text" placeholder="—" value="${ex?.reps||''}"></td>
-    <td><input type="text" placeholder="—" value="${ex?.sets||''}"></td>
+    <td><input type="text" placeholder="8 x 3" value="${exVolume(ex)}"></td>
     <td><button class="btn-del-ex" onclick="this.closest('tr').remove()">×</button></td>
   `;
   tbody.appendChild(tr);
@@ -995,15 +1514,13 @@ function addExRow(ex) {
 
 function getExercises() {
   return Array.from(document.querySelectorAll('#ex-tbody tr')).map(tr => {
-    const inputs = tr.querySelectorAll('input');
-    return { name: inputs[0].value.trim(), weight: inputs[1].value.trim(), reps: inputs[2].value.trim(), sets: inputs[3].value.trim() };
+    const fields = tr.querySelectorAll('textarea, input');
+    return { name: fields[0].value.trim(), weight: fields[1].value.trim(), volume: fields[2].value.trim() };
   }).filter(e => e.name);
 }
 
 function clearForm() {
   document.getElementById('f-bw').value = '';
-  document.getElementById('f-cardio').value = '';
-  document.getElementById('f-note').value = '';
   document.getElementById('ex-tbody').innerHTML = '';
   addExRow(); addExRow(); addExRow();
 }
@@ -1020,16 +1537,14 @@ function saveSession() {
     week: document.getElementById('f-week').value,
     type,
     bodyweight: document.getElementById('f-bw').value,
-    cardio: document.getElementById('f-cardio').value,
-    exercises,
-    note: document.getElementById('f-note').value
+    exercises
   };
 
   const data = getData();
   data.unshift(session);
   saveData(data);
   updateHeaderStats();
-  toast('✦ Session saved!');
+  toast('Session saved');
   clearForm();
 }
 
@@ -1046,17 +1561,17 @@ function renderHistory() {
   const search = (document.getElementById('search-input')?.value || '').toLowerCase();
   let data = getData();
   if (currentFilter !== 'all') data = data.filter(s => s.type === currentFilter);
-  if (search) data = data.filter(s => s.exercises.some(e => e.name.toLowerCase().includes(search)) || (s.note||'').toLowerCase().includes(search));
+  if (search) data = data.filter(s => s.exercises.some(e => e.name.toLowerCase().includes(search)));
 
   if (data.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="big">📋</div><p>No sessions yet. Log your first workout!</p></div>`;
+    list.innerHTML = `<div class="empty-state"><p>No sessions yet. Log your first workout.</p></div>`;
     return;
   }
 
-  const typeLabel = { lower: '🟦 Lower', push: '🟦 Push', pull: '🟦 Pull', meta: '🟦 Metabolic + Core', other: 'Other' };
+  const typeLabel = { lower: 'Lower', push: 'Push', pull: 'Pull', meta: 'Metabolic + Core', other: 'Other' };
   list.innerHTML = data.map(s => {
     const exPreview = s.exercises.slice(0, 3).map(e => e.name).join(' · ') + (s.exercises.length > 3 ? ` +${s.exercises.length - 3}` : '');
-    const rows = s.exercises.map(e => `<tr><td>${e.name}</td><td>${e.weight||'—'}</td><td>${e.reps||'—'}</td><td>${e.sets||'—'}</td></tr>`).join('');
+    const rows = s.exercises.map(e => `<tr><td><span class="sc-ex-name">${escHtml(e.name)}</span></td><td>${escHtml(e.weight||'—')}</td><td>${escHtml(exVolume(e)||'—')}</td></tr>`).join('');
     const checks = s.checks?.map(c => {
       const labels = { 'reps-left': '2 reps left', 'no-fail': 'No fails', 'back-ok': 'Back OK', 'want-more': 'Wants more' };
       return `<span class="sc-check">${labels[c]||c}</span>`;
@@ -1069,16 +1584,14 @@ function renderHistory() {
             <div class="sc-type">${typeLabel[s.type]||s.type}${s.bodyweight ? ' · ' + s.bodyweight + ' kg' : ''}</div>
           </div>
           <div class="sc-preview">${exPreview}</div>
-          <span class="sc-toggle">▶</span>
+          <span class="sc-toggle">View</span>
         </div>
         <div class="sc-body">
           <table>
-            <thead><tr><th>Exercise</th><th>Weight</th><th>Reps</th><th>Sets</th></tr></thead>
+            <thead><tr><th>Exercise Name</th><th>Weight</th><th>Reps x Sets</th></tr></thead>
             <tbody>${rows}</tbody>
           </table>
-          ${s.cardio ? `<div style="font-size:10px;color:var(--muted);margin-bottom:6px">🏃 ${s.cardio}</div>` : ''}
           ${checks ? `<div class="sc-checks">${checks}</div>` : ''}
-          ${s.note ? `<div class="sc-note">"${s.note}"</div>` : ''}
           <div class="sc-actions">
             <button class="btn-sm" onclick="loadSession(${s.id})">Load to Form</button>
             <button class="btn-sm danger" onclick="deleteSession(${s.id})">Delete</button>
@@ -1101,8 +1614,6 @@ function loadSession(id) {
   document.getElementById('f-week').value = s.week || '';
   document.getElementById('f-type').value = s.type;
   document.getElementById('f-bw').value = s.bodyweight || '';
-  document.getElementById('f-cardio').value = s.cardio || '';
-  document.getElementById('f-note').value = s.note || '';
   document.getElementById('ex-tbody').innerHTML = '';
   s.exercises.forEach(e => addExRow(e));
   updateDayBadge();
@@ -1120,8 +1631,72 @@ function deleteSession(id) {
   });
 }
 
+// ── EXERCISE STATS ──
+const STAT_STORE = 'workoutExerciseStats_2026';
+
+function normalizeStat(stat) {
+  return {
+    name: stat?.name || '',
+    weight: stat?.weight || '',
+    volume: stat?.volume || [stat?.reps, stat?.sets].filter(Boolean).join(' x ')
+  };
+}
+
+function normalizeStats(stats) {
+  return stats.map(normalizeStat).filter(stat => stat.name);
+}
+
+function getStats() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STAT_STORE));
+    return saved && saved.length ? normalizeStats(saved) : JSON.parse(JSON.stringify(DEFAULT_STATS));
+  } catch { return JSON.parse(JSON.stringify(DEFAULT_STATS)); }
+}
+
+function statRow(stat) {
+  return `<div class="stat-row">
+    <textarea rows="2" placeholder="Exercise name">${escHtml(stat?.name||'')}</textarea>
+    <input type="text" placeholder="50kg" value="${escHtml(stat?.weight||'')}">
+    <input type="text" placeholder="8 x 3" value="${escHtml(stat?.volume||'')}">
+    <button class="btn-del-ex" onclick="this.closest('.stat-row').remove()">×</button>
+  </div>`;
+}
+
+function renderStats() {
+  const list = document.getElementById('stat-list');
+  const search = (document.getElementById('stat-search')?.value || '').toLowerCase();
+  const stats = getStats().filter(stat => {
+    const haystack = [stat.name, stat.weight, stat.volume].filter(Boolean).join(' ').toLowerCase();
+    return !search || haystack.includes(search);
+  });
+  list.innerHTML = stats.length ? stats.map(statRow).join('') : `<div class="empty-state"><p>No exercise stats found.</p></div>`;
+}
+
+function addStatRow(stat) {
+  const list = document.getElementById('stat-list');
+  const div = document.createElement('div');
+  div.innerHTML = statRow(stat || { name: '', weight: '', volume: '' });
+  list.appendChild(div.firstElementChild);
+}
+
+function getStatRows() {
+  return Array.from(document.querySelectorAll('#stat-list .stat-row')).map(row => {
+    const fields = row.querySelectorAll('textarea, input');
+    return {
+      name: fields[0].value.trim(),
+      weight: fields[1].value.trim(),
+      volume: fields[2].value.trim()
+    };
+  }).filter(stat => stat.name);
+}
+
+function saveStats() {
+  localStorage.setItem(STAT_STORE, JSON.stringify(getStatRows()));
+  toast('Stats saved');
+}
+
 // ── TEMPLATES ──
-const TMPL_STORE = 'workoutTemplates_2026';
+const TMPL_STORE = 'workoutTemplates_2026_clean';
 
 function getTemplates() {
   try {
@@ -1136,17 +1711,15 @@ function renderTemplates() {
   grid.innerHTML = tmpls.map(t => `
     <div class="tmpl-card" onclick="useTemplate('${t.id}')">
       <div class="tmpl-header">
-        <span class="tmpl-icon">${t.icon||'📋'}</span>
         <div>
           <div class="tmpl-name">${t.name}</div>
           <div class="tmpl-tag">${t.type.toUpperCase()}</div>
         </div>
       </div>
       <div class="tmpl-body">
-        ${t.exercises.map(e => `<div class="tmpl-ex">· ${e.name}${e.weight?' — '+e.weight:''}${e.reps?' × '+e.reps:''}${e.sets?' × '+e.sets:''}</div>`).join('')}
-        ${t.cardio ? `<div class="tmpl-ex" style="color:var(--green)">🏃 ${t.cardio}</div>` : ''}
+        ${t.exercises.map(e => `<div class="tmpl-ex"><div class="tmpl-ex-name">${escHtml(e.name)}</div><div class="tmpl-ex-meta">${escHtml([e.weight, exVolume(e)].filter(Boolean).join(' · '))}</div></div>`).join('')}
       </div>
-      <button class="tmpl-use-btn" onclick="event.stopPropagation();useTemplate('${t.id}')">Use Template →</button>
+      <button class="tmpl-use-btn" onclick="event.stopPropagation();useTemplate('${t.id}')">Use Template</button>
     </div>
   `).join('');
 
@@ -1158,7 +1731,6 @@ function renderTemplateEditor(tmpls) {
   list.innerHTML = tmpls.map((t, ti) => `
     <div class="tmpl-edit-card" data-ti="${ti}">
       <div class="tmpl-edit-header">
-        <input type="text" value="${escHtml(t.icon||'📋')}" style="width:32px;text-align:center" placeholder="🏋️" oninput="tmplField(${ti},'icon',this.value)">
         <input type="text" value="${escHtml(t.name)}" placeholder="Template name" style="flex:1" oninput="tmplField(${ti},'name',this.value)">
         <select onchange="tmplField(${ti},'type',this.value)">
           ${['lower','push','pull','meta','other'].map(v => `<option value="${v}"${t.type===v?' selected':''}>${v}</option>`).join('')}
@@ -1166,12 +1738,10 @@ function renderTemplateEditor(tmpls) {
         <button class="btn-del-tmpl" onclick="deleteTemplate(${ti})" title="Delete template">×</button>
       </div>
       <div class="tmpl-edit-body">
-        <input class="tmpl-edit-cardio" type="text" placeholder="Cardio (optional)" value="${escHtml(t.cardio||'')}" oninput="tmplField(${ti},'cardio',this.value)">
-        <div class="ex-header-labels" style="display:grid;grid-template-columns:1fr 64px 56px 52px 24px;gap:4px;margin-bottom:3px">
+        <div class="ex-header-labels" style="display:grid;grid-template-columns:1fr 72px 96px 24px;gap:4px;margin-bottom:3px">
           <span style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding-left:6px">Exercise</span>
           <span style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:center">Weight</span>
-          <span style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:center">Reps</span>
-          <span style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:center">Sets</span>
+          <span style="font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:center">Reps x Sets</span>
           <span></span>
         </div>
         <div id="tmpl-exrows-${ti}">
@@ -1187,10 +1757,9 @@ function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'
 
 function tmplExRow(ti, ei, e) {
   return `<div class="tmpl-ex-edit-row" id="tmpl-ex-${ti}-${ei}">
-    <input type="text" placeholder="Exercise name" value="${escHtml(e.name||'')}" style="text-align:left" oninput="tmplExField(${ti},${ei},'name',this.value)">
+    <textarea rows="2" placeholder="Exercise name" oninput="tmplExField(${ti},${ei},'name',this.value)">${escHtml(e.name||'')}</textarea>
     <input type="text" placeholder="—" value="${escHtml(e.weight||'')}" oninput="tmplExField(${ti},${ei},'weight',this.value)">
-    <input type="text" placeholder="—" value="${escHtml(e.reps||'')}" oninput="tmplExField(${ti},${ei},'reps',this.value)">
-    <input type="text" placeholder="—" value="${escHtml(e.sets||'')}" oninput="tmplExField(${ti},${ei},'sets',this.value)">
+    <input type="text" placeholder="8 x 3" value="${escHtml(exVolume(e))}" oninput="tmplExField(${ti},${ei},'volume',this.value)">
     <button class="btn-del-ex" onclick="deleteTmplEx(${ti},${ei})">×</button>
   </div>`;
 }
@@ -1213,7 +1782,7 @@ function tmplExField(ti, ei, field, val) {
 
 function addTmplExRow(ti) {
   const tmpls = getEditingTemplates();
-  const newEx = { name: '', weight: '', reps: '', sets: '' };
+  const newEx = { name: '', weight: '', volume: '' };
   tmpls[ti].exercises.push(newEx);
   const ei = tmpls[ti].exercises.length - 1;
   const container = document.getElementById(`tmpl-exrows-${ti}`);
@@ -1242,9 +1811,7 @@ function addNewTemplate() {
     id: 'tmpl_' + Date.now(),
     name: 'New Template',
     type: 'other',
-    icon: '📋',
-    cardio: '',
-    exercises: [{ name: '', weight: '', reps: '', sets: '' }]
+    exercises: [{ name: '', weight: '', volume: '' }]
   });
   saveTemplates(true);
 }
@@ -1254,19 +1821,18 @@ function saveTemplates(silent) {
   localStorage.setItem(TMPL_STORE, JSON.stringify(tmpls));
   _editingTemplates = null;
   renderTemplates();
-  if (!silent) toast('Templates saved ✓');
+  if (!silent) toast('Templates saved');
 }
 
 function useTemplate(id) {
   const t = getTemplates().find(t => t.id === id);
   if (!t) return;
   document.getElementById('f-type').value = t.type;
-  document.getElementById('f-cardio').value = t.cardio || '';
   document.getElementById('ex-tbody').innerHTML = '';
   t.exercises.forEach(e => addExRow(e));
   updateDayBadge();
   showTab('log');
-  toast('Template loaded → fill in your actuals');
+  toast('Template loaded. Fill in your actuals');
 }
 
 // ── STATS ──
@@ -1300,7 +1866,7 @@ function exportData() {
   a.href = URL.createObjectURL(blob);
   a.download = `workout-log-${new Date().toISOString().split('T')[0]}.json`;
   a.click();
-  toast('Exported ✓');
+  toast('Exported');
 }
 
 function importData(event) {
@@ -1312,13 +1878,14 @@ function importData(event) {
       const parsed = JSON.parse(e.target.result);
       const sessions = parsed.sessions || parsed;
       if (!Array.isArray(sessions)) throw new Error('bad format');
+      const normalized = normalizeSessions(sessions);
       const existing = getData();
       const ids = new Set(existing.map(s => s.id));
-      const merged = [...existing, ...sessions.filter(s => !ids.has(s.id))];
+      const merged = [...existing, ...normalized.filter(s => !ids.has(s.id))];
       merged.sort((a, b) => new Date(b.date) - new Date(a.date));
       saveData(merged);
       updateHeaderStats();
-      toast(`Imported ${sessions.length} sessions`);
+      toast(`Imported ${normalized.length} sessions`);
     } catch { toast('Import failed — check file format', true); }
   };
   reader.readAsText(file);
@@ -1352,8 +1919,6 @@ function copyForWhoop() {
   const week    = document.getElementById('f-week').value;
   const type    = document.getElementById('f-type').value;
   const bw      = document.getElementById('f-bw').value;
-  const cardio  = document.getElementById('f-cardio').value;
-  const note    = document.getElementById('f-note').value;
   const exs     = getExercises();
 
   const typeLabel = { lower: 'Lower', push: 'Push', pull: 'Pull', meta: 'Metabolic + Core', other: 'Other' };
@@ -1367,21 +1932,11 @@ function copyForWhoop() {
     lines.push('Strength:');
     exs.forEach(e => {
       let s = `  • ${e.name}`;
-      const parts = [e.weight, e.reps, e.sets].filter(Boolean);
-      if (parts.length) s += ` — ${[e.weight, e.reps && e.reps + ' reps', e.sets && e.sets + ' sets'].filter(Boolean).join(' × ')}`;
+      const parts = [e.weight, exVolume(e)].filter(Boolean);
+      if (parts.length) s += ` — ${parts.join(' · ')}`;
       lines.push(s);
     });
     lines.push('');
-  }
-
-  if (cardio) {
-    lines.push('Cardio:');
-    lines.push(`  ${cardio}`);
-    lines.push('');
-  }
-
-  if (note) {
-    lines.push(`Note: ${note}`);
   }
 
   const text = lines.join('\n').trim();
@@ -1389,7 +1944,7 @@ function copyForWhoop() {
   if (!text) { toast('Nothing to copy yet', true); return; }
 
   navigator.clipboard.writeText(text).then(() => {
-    toast('⎘ Copied! Paste into WHOOP journal');
+    toast('Copied. Paste into WHOOP journal');
   }).catch(() => {
     // fallback for older browsers
     const ta = document.createElement('textarea');
@@ -1399,7 +1954,7 @@ function copyForWhoop() {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    toast('⎘ Copied! Paste into WHOOP journal');
+    toast('Copied. Paste into WHOOP journal');
   });
 }
 
@@ -1431,10 +1986,10 @@ function closeSyncModal() {
 function saveSyncConfig() {
   const apiKey = document.getElementById('sync-apikey').value.trim();
   const binId  = document.getElementById('sync-binid').value.trim();
-  if (!apiKey) { setSyncStatus('⚠ API key required', true); return; }
+  if (!apiKey) { setSyncStatus('API key required', true); return; }
   localStorage.setItem(SYNC_KEY_STORE, apiKey);
   localStorage.setItem(SYNC_BIN_STORE, binId);
-  setSyncStatus('Config saved ✓');
+  setSyncStatus('Config saved');
   updateSyncBtn();
 }
 
@@ -1456,7 +2011,7 @@ function setSyncStatus(msg, err) {
 function updateSyncBtn() {
   const btn = document.getElementById('sync-btn');
   const { apiKey } = getSyncConfig();
-  btn.textContent = apiKey ? '☁ Synced' : '☁ Sync';
+  btn.textContent = apiKey ? 'Synced' : 'Sync';
   btn.style.color = apiKey ? '#6ee7b7' : '';
   btn.style.borderColor = apiKey ? '#6ee7b7' : '';
 }
@@ -1464,10 +2019,15 @@ function updateSyncBtn() {
 async function syncPush() {
   const apiKey = document.getElementById('sync-apikey').value.trim();
   let   binId  = document.getElementById('sync-binid').value.trim();
-  if (!apiKey) { setSyncStatus('⚠ Enter API key first', true); return; }
+  if (!apiKey) { setSyncStatus('Enter API key first', true); return; }
 
   setSyncStatus('Pushing…');
-  const payload = { sessions: getData(), pushed: new Date().toISOString() };
+  const payload = {
+    sessions: getData(),
+    stats: getStats(),
+    templates: getTemplates(),
+    pushed: new Date().toISOString()
+  };
 
   try {
     let res, data;
@@ -1483,7 +2043,7 @@ async function syncPush() {
       binId = data.metadata.id;
       localStorage.setItem(SYNC_BIN_STORE, binId);
       document.getElementById('sync-binid').value = binId;
-      setSyncStatus(`✓ Created bin & pushed! Bin ID: ${binId}`);
+      setSyncStatus(`Created bin and pushed. Bin ID: ${binId}`);
     } else {
       // Update existing bin
       res = await fetch(`${JSONBIN_BASE}/b/${binId}`, {
@@ -1493,20 +2053,20 @@ async function syncPush() {
       });
       data = await res.json();
       if (!res.ok) throw new Error(data.message || res.status);
-      setSyncStatus(`✓ Pushed ${getData().length} sessions to cloud`);
+      setSyncStatus(`Pushed ${getData().length} sessions, stats, and templates to cloud`);
     }
     localStorage.setItem(SYNC_KEY_STORE, apiKey);
     updateSyncBtn();
-    toast('☁ Pushed to cloud ✓');
+    toast('Pushed to cloud');
   } catch(e) {
-    setSyncStatus(`✗ Push failed: ${e.message}`, true);
+    setSyncStatus(`Push failed: ${e.message}`, true);
   }
 }
 
 async function syncPull() {
   const apiKey = document.getElementById('sync-apikey').value.trim();
   const binId  = document.getElementById('sync-binid').value.trim();
-  if (!apiKey || !binId) { setSyncStatus('⚠ API key + Bin ID required to pull', true); return; }
+  if (!apiKey || !binId) { setSyncStatus('API key + Bin ID required to pull', true); return; }
 
   setSyncStatus('Pulling…');
   try {
@@ -1516,8 +2076,10 @@ async function syncPull() {
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || res.status);
 
-    const sessions = data.record?.sessions;
+    const record = data.record || {};
+    let sessions = record.sessions;
     if (!Array.isArray(sessions)) throw new Error('No sessions found in bin');
+    sessions = normalizeSessions(sessions);
 
     // Merge: cloud wins on conflict (same id → keep cloud version)
     const local   = getData();
@@ -1525,19 +2087,31 @@ async function syncPull() {
     const merged  = [...sessions, ...local.filter(s => !cloudIds.has(s.id))];
     merged.sort((a, b) => new Date(b.date) - new Date(a.date));
     saveData(merged);
+
+    if (Array.isArray(record.stats)) {
+      localStorage.setItem(STAT_STORE, JSON.stringify(normalizeStats(record.stats)));
+    }
+    if (Array.isArray(record.templates)) {
+      localStorage.setItem(TMPL_STORE, JSON.stringify(record.templates));
+      _editingTemplates = null;
+    }
+
     localStorage.setItem(SYNC_KEY_STORE, apiKey);
     localStorage.setItem(SYNC_BIN_STORE, binId);
     document.getElementById('sync-binid').value = binId;
     updateSyncBtn();
     updateHeaderStats();
-    setSyncStatus(`✓ Pulled ${sessions.length} sessions from cloud`);
-    toast(`☁ Pulled ${sessions.length} sessions ✓`);
+    if (document.getElementById('tab-stats').style.display !== 'none') renderStats();
+    if (document.getElementById('tab-templates').style.display !== 'none') renderTemplates();
+    setSyncStatus(`Pulled ${sessions.length} sessions, stats, and templates from cloud`);
+    toast(`Pulled ${sessions.length} sessions`);
   } catch(e) {
-    setSyncStatus(`✗ Pull failed: ${e.message}`, true);
+    setSyncStatus(`Pull failed: ${e.message}`, true);
   }
 }
 
 // ── INIT ──
+seedInitialData();
 initForm();
 updateHeaderStats();
 updateSyncBtn();
